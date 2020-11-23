@@ -6,12 +6,15 @@ import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 
+import imgCervene from "../images/redWine.png";
+import imgBile from "../images/whiteWine.png";
+
 const Item = ({ item, addItem }) => {
   const { image, druh, color, rocnik, name, price } = item;
   return (
     <Grid item xs={6} md={3}>
       <Wrapper>
-        {image}
+        {color === "červené" ? <img src={imgCervene} /> : <img src={imgBile} />}
         <div className="info">
           <Grid container direction="row" justify="space-around">
             <Chip size="small" label={druh} />

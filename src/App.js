@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { TypographyStyle, GoogleFont } from "react-typography";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
+import GlobalStyle from "./root-wrapper";
+import typography from "./utils/typography";
 
 import SignIn from "./pages/SignIn";
 import HomePage from "./pages/Home";
@@ -10,13 +10,14 @@ import Navigation from "./components/navigation";
 import CheckoutPage from "./pages/checkout";
 import SignUp from "./pages/SignUp";
 
-import GlobalStyle from "./root-wrapper";
-import typography from "./utils/typography";
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selector";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 /* import CurrentUserContext from "./contexts/current-user/current-user.context"; */
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+
 const App = props => {
   /*  const [currentUser, setCurrentUser] = useState(null); */
 

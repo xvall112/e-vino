@@ -14,6 +14,8 @@ const config = {
   measurementId: "G-SH7D914J5Q"
 };
 
+firebase.initializeApp(config);
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 
@@ -39,7 +41,40 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   }
   return userRef;
 };
-firebase.initializeApp(config);
+
+export const addWines = () => {
+  const winesRef = firestore.collection("wines");
+  try {
+    winesRef.add({
+      name: "Solaris",
+      price: 160,
+      obsah: 0.7,
+      color: "bílé",
+      rocnik: 2020,
+      druh: "suche",
+      image: ""
+    });
+  } catch (error) {
+    console.log("error creating user", error.message);
+  }
+};
+
+export const convertWinesSnapshotToMap = collections => {
+  const transformedCollection = collections.docs.map(doc => {
+    const { name, price, obsah, color, rocnik, druh } = doc.data();
+
+    return {
+      name,
+      price,
+      obsah,
+      color,
+      rocnik,
+      druh,
+      id: doc.id
+    };
+  });
+  return transformedCollection;
+};
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
