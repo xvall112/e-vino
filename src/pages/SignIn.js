@@ -1,5 +1,5 @@
 import React from "react";
-
+import { connect } from "react-redux";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -13,6 +13,11 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import {
+  googleSignInStart,
+  emailSignInStart
+} from "../redux/user/user.actions";
+
 const validationSchema = yup.object({
   email: yup
     .string("Vložte email")
@@ -21,7 +26,7 @@ const validationSchema = yup.object({
   password: yup.string("Vložte heslo").required("Heslo není vyplňeno")
 });
 
-const SignIn = () => {
+const SignIn = ({ googleSignInStart, emailSignInStart }) => {
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -29,12 +34,9 @@ const SignIn = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async values => {
-      try {
-        await auth.signInWithEmailAndPassword(values.email, values.password);
-        formik.resetForm({});
-      } catch (error) {
-        console.log(error);
-      }
+      emailSignInStart(values.email, values.password);
+
+      formik.resetForm({});
     }
   });
 
@@ -115,10 +117,11 @@ const SignIn = () => {
               <Grid container justify="center" alignItems="center">
                 <span>nebo</span>
                 <Button
+                  type="button"
                   color="primary"
                   variant="contained"
                   fullWidth
-                  onClick={signInWithGoogle}
+                  onClick={googleSignInStart}
                 >
                   Přihlásit přes Google
                 </Button>
@@ -134,6 +137,13 @@ const SignIn = () => {
     </Wrapper>
   );
 };
+
+const mapDispatchToProps = dispatch => ({
+  googleSignInStart: () => dispatch(googleSignInStart()),
+  emailSignInStart: (email, password) =>
+    dispatch(emailSignInStart({ email, password }))
+});
+
 const Wrapper = styled.section`
   .register-button {
     display: flex;
@@ -144,4 +154,4 @@ const Wrapper = styled.section`
 const MainGrid = styled(Grid)`
   min-height: 90vh;
 `;
-export default SignIn;
+export default connect(null, mapDispatchToProps)(SignIn);

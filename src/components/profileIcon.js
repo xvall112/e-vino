@@ -10,9 +10,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import { auth } from "../firebase/firebase.utils";
 
+import { signOutStart } from "../redux/user/user.actions";
+
 /* import CurrentUserContext from "../contexts/current-user/current-user.context"; */
 
-const ProfileIcon = ({ currentUser }) => {
+const ProfileIcon = ({ currentUser, signOutStart }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   /* const currentUser = useContext(CurrentUserContext); */
 
@@ -44,7 +46,7 @@ const ProfileIcon = ({ currentUser }) => {
           <MenuItem>Moje Objednávky</MenuItem>
           <MenuItem onClick={handleClose}>
             <Button
-              onClick={() => auth.signOut()}
+              onClick={signOutStart}
               fullWidth
               variant="outlined"
               color="primary"
@@ -86,4 +88,10 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 });
 
-export default connect(mapStateToProps)(ProfileIcon);
+const mapDispatchToProps = dispatch => ({
+  signOutStart: () => {
+    dispatch(signOutStart());
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileIcon);

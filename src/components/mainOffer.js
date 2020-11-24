@@ -2,36 +2,24 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Item from "./item";
 import Grid from "@material-ui/core/Grid";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { selectDirectoryWine } from "../redux/directory/directory.selector";
 import {
-  updateDirectory,
-  setLoading
-} from "../redux/directory/directory.actions";
-
-import {
-  firestore,
-  convertWinesSnapshotToMap
-} from "../firebase/firebase.utils";
+  selectDirectoryWine,
+  selectIsWinesFetching
+} from "../redux/directory/directory.selector";
+import { fetchWinesStart } from "../redux/directory/directory.actions";
 
 /* import CollectionsContext from "../contexts/collections/collections.context"; */
 
 import Container from "@material-ui/core/Container";
 
-const MainOffer = ({ wines, updateWines, setLoading }) => {
+const MainOffer = ({ wines, fetchWinesStart }) => {
   /* const collections = useContext(CollectionsContext); */
 
   useEffect(() => {
-    setLoading(true);
-    const winesRef = firestore.collection("wines");
-    winesRef.onSnapshot(async snapshot => {
-      const winesMap = convertWinesSnapshotToMap(snapshot);
-      updateWines(winesMap);
-      setLoading(false);
-    });
+    fetchWinesStart();
   }, []);
   return (
     <Wrapper>
@@ -57,8 +45,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateWines: winesMap => dispatch(updateDirectory(winesMap)),
-  setLoading: bool => dispatch(setLoading(bool))
+  fetchWinesStart: () => dispatch(fetchWinesStart())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainOffer);

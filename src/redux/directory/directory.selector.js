@@ -7,7 +7,7 @@ export const selectDirectoryWine = createSelector(
   directory => directory.wines
 );
 
-export const selectLoading = createSelector(
+export const selectIsWinesFetching = createSelector(
   [selectDirectory],
-  directory => directory.Loading
+  directory => directory.isFetching
 );

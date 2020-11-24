@@ -1,11 +1,15 @@
 import { directoryActionTypes } from "./directory.type";
 
-export const updateDirectory = collectionsMap => ({
-  type: directoryActionTypes.UPDATE_DIRECTORY,
+export const fetchWinesSuccess = collectionsMap => ({
+  type: directoryActionTypes.FETCH_COLLECTIONS_SUCCESS,
   payload: collectionsMap
 });
 
-export const setLoading = bool => ({
-  type: directoryActionTypes.SET_LOADING,
-  payload: bool
+export const fetchWinesStart = () => ({
+  type: directoryActionTypes.FETCH_COLLECTIONS_START
+});
+
+export const fetchWinesFailure = ErrorMessage => ({
+  type: directoryActionsTypes.FETCH_COLLECTIONS_FAILURE,
+  payload: ErrorMessage
 });

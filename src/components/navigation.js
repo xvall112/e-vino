@@ -11,7 +11,7 @@ import ProfileIcon from "./profileIcon";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { selectLoading } from "../redux/directory/directory.selector";
+import { selectIsWinesFetching } from "../redux/directory/directory.selector";
 
 const Navigation = loading => {
   return (
@@ -44,7 +44,7 @@ const Navigation = loading => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: selectLoading
+  loading: selectIsWinesFetching
 });
 
 const Wrapper = styled.section`
