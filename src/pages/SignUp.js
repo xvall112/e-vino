@@ -4,6 +4,9 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { auth, createUserProfileDocument } from "../firebase/firebase.utils";
 
+import { connect } from "react-redux";
+import { signUpStart } from "../redux/user/user.actions";
+
 /* components */
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -29,7 +32,7 @@ const validationSchema = yup.object({
   name: yup.string("Vložte jméno").required("Jméno není vyplňeno")
 });
 
-const SignUp = () => {
+const SignUp = ({ singUpStart }) => {
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -39,7 +42,9 @@ const SignUp = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async values => {
-      try {
+      singUpStart(values.email, values.password, values.name);
+      formik.resetForm({});
+      /*   try {
         const { user } = await auth.createUserWithEmailAndPassword(
           values.email,
           values.password
@@ -52,7 +57,7 @@ const SignUp = () => {
         formik.resetForm({});
       } catch (error) {
         console.error(error);
-      }
+      } */
     }
   });
 
@@ -177,6 +182,12 @@ const SignUp = () => {
     </Wrapper>
   );
 };
+
+const mapDispatchToProps = dispatch => ({
+  singUpStart: (email, password, name) =>
+    dispatch(signUpStart({ email, password, name }))
+});
+
 const Wrapper = styled.section`
   .register-button {
     display: flex;
@@ -187,4 +198,4 @@ const Wrapper = styled.section`
 const MainGrid = styled(Grid)`
   min-height: 90vh;
 `;
-export default SignUp;
+export default connect(null, mapDispatchToProps)(SignUp);

@@ -5,9 +5,11 @@ import { createStructuredSelector } from "reselect";
 import {
   clearItemFromCart,
   removeItem,
-  addItem
+  addItem,
+  addOrderStart
 } from "../redux/cart/cart.action";
 import { selectCartItems, selectCartTotal } from "../redux/cart/cart.selectors";
+import { selectCurrentUser } from "../redux/user/user.selector";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -24,7 +26,9 @@ const CheckoutItems = ({
   clearItem,
   removeItem,
   addItem,
-  itemTotal
+  itemTotal,
+  addOrder,
+  currentUser
 }) => {
   return (
     <Wrapper>
@@ -78,7 +82,22 @@ const CheckoutItems = ({
               <p>Košík je prázdný</p>
             </Grid>
           )}
-          <span className="total">CELKEM: {total} Kč</span>
+          <Grid
+            container
+            direction="row"
+            justify="space-around"
+            alignItems="center"
+          >
+            <span className="total">CELKEM: {total} Kč</span>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => addOrder({ cartItems, currentUser, total })}
+              disabled={cartItems.length === 0 ? true : false}
+            >
+              Objednat
+            </Button>
+          </Grid>
         </Grid>
       </Container>
     </Wrapper>
@@ -87,11 +106,13 @@ const CheckoutItems = ({
 const mapDispatchToProps = dispatch => ({
   clearItem: item => dispatch(clearItemFromCart(item)),
   removeItem: item => dispatch(removeItem(item)),
-  addItem: item => dispatch(addItem(item))
+  addItem: item => dispatch(addItem(item)),
+  addOrder: order => dispatch(addOrderStart(order))
 });
 const mapStateToProps = createStructuredSelector({
   cartItems: selectCartItems,
-  total: selectCartTotal
+  total: selectCartTotal,
+  currentUser: selectCurrentUser
 });
 
 const Wrapper = styled.div`

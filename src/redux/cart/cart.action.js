@@ -22,3 +22,17 @@ export const removeItem = item => ({
 export const clearCart = () => ({
   type: cartActionTypes.CLEAR_CART
 });
+
+export const addOrderStart = order => ({
+  type: cartActionTypes.ADD_ORDER_START,
+  payload: order
+});
+
+export const addOrderSuccess = () => ({
+  type: cartActionTypes.ADD_ORDER_SUCCESS
+});
+
+export const addOrderFailure = error => ({
+  type: cartActionTypes.ADD_ORDER_FAILURE,
+  payload: error
+});

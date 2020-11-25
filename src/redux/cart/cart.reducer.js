@@ -7,7 +7,8 @@ import {
 
 const INITIAL_STATE = {
   hidden: false,
-  cartItems: []
+  cartItems: [],
+  error: null
 };
 
 const cartReducer = (state = INITIAL_STATE, action) => {
@@ -27,12 +28,15 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cartItems: clearItemFromCart(state.cartItems, action.payload)
       };
+    case cartActionTypes.ADD_ORDER_FAILURE:
+      return { ...state, error: action.payload };
 
     case cartActionTypes.REMOVE_ITEM:
       return {
         ...state,
         cartItems: removeItemFromCart(state.cartItems, action.payload)
       };
+    case cartActionTypes.ADD_ORDER_SUCCESS:
     case cartActionTypes.CLEAR_CART:
       return {
         ...state,

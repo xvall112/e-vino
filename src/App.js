@@ -9,6 +9,7 @@ import HomePage from "./pages/Home";
 import Navigation from "./components/navigation";
 import CheckoutPage from "./pages/checkout";
 import SignUp from "./pages/SignUp";
+import AdminPage from "./pages/admin";
 
 import { selectCurrentUser } from "./redux/user/user.selector";
 import { connect } from "react-redux";
@@ -48,6 +49,9 @@ const App = ({ currentUser, checkUserSession }) => {
         </Route>
         <Route path="/signUp" exact>
           {currentUser ? <Redirect to="/" /> : <SignUp />}
+        </Route>
+        <Route path="/admin" exact>
+          <AdminPage />
         </Route>
       </Switch>
     </>

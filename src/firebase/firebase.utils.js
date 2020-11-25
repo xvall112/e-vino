@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-import { useForkRef } from "@material-ui/core";
 
 const config = {
   apiKey: "AIzaSyABOr3Vj_-gy7GPoAdRWes2R351oWNwb20",
@@ -15,6 +14,34 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
+export const addOrderToFirestore = async items => {
+  const {
+    payload: { cartItems, currentUser, total }
+  } = items;
+  const createAt = new Date();
+  const userRef = firestore.collection("users").doc(currentUser.id);
+  const ordersRef = firestore.collection("orders");
+
+  await ordersRef
+    .add({
+      items: cartItems,
+      userRef: userRef,
+      celkem: total,
+      date: createAt
+    })
+    .then(function(docRef) {
+      const newOrdersRef = firestore.collection("orders").doc(docRef.id);
+      userRef.update({
+        orders: firebase.firestore.FieldValue.arrayUnion({
+          orderRef: newOrdersRef
+        })
+      });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
@@ -71,6 +98,18 @@ export const convertWinesSnapshotToMap = collections => {
       rocnik,
       druh,
       id: doc.id
+    };
+  });
+  return transformedCollection;
+};
+
+export const convertCollectionAllOrdersToMap = collections => {
+  const transformedCollection = collections.docs.map(doc => {
+    const { celkem, items } = doc.data();
+    return {
+      celkem,
+      id: doc.id,
+      items
     };
   });
   return transformedCollection;
