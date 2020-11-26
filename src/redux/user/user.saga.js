@@ -20,6 +20,8 @@ import {
 
 import { notistackSuccess, notistackError } from "../../notistack/notistack";
 
+import { loadingStart, loadingEnd } from "../loading/loading.actions";
+
 export function* getSnapshotFromUserAuth(userAuth, addData) {
   try {
     const userRef = yield call(createUserProfileDocument, userAuth, addData);
@@ -32,22 +34,26 @@ export function* getSnapshotFromUserAuth(userAuth, addData) {
 }
 
 export function* signInWithGoogle() {
+  yield put(loadingEnd());
   try {
     const { user } = yield auth.signInWithPopup(googleProvider);
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
     yield call(notistackError, "Něco se pokazilo, zkuzte znovu");
+    yield put(loadingEnd());
   }
 }
 
 export function* signInWithEmail({ payload: { email, password } }) {
+  yield put(loadingStart());
   try {
     const { user } = yield auth.signInWithEmailAndPassword(email, password);
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
     yield call(notistackError, "Uživatelské jméno nebo heslo nesouhlasí");
+    yield put(loadingEnd());
   }
 }
 
@@ -62,25 +68,39 @@ export function* isUserAuthenticated() {
 }
 
 export function* signOut() {
+  yield put(loadingStart());
   try {
     yield auth.signOut();
     yield put(signOutSuccess());
     yield call(notistackSuccess, "Jste Odhlášen");
+    yield put(loadingEnd());
   } catch (error) {
     yield put(signOutFailure(error));
+    yield put(loadingEnd());
   }
 }
 
-export function* signUp({ payload: { email, password, name } }) {
+export function* signUp({ payload: { email, password, displayName } }) {
+  yield put(loadingStart());
   try {
     const { user } = yield auth.createUserWithEmailAndPassword(email, password);
-    yield getSnapshotFromUserAuth(user, {
-      displayName: JSON.stringify(name, null, 2)
-    });
+
+    yield put(
+      signUpSuccess({
+        user,
+        additionalData: { displayName }
+      })
+    );
+    yield put(loadingEnd());
   } catch (error) {
     yield put(signUpFailure(error));
     yield call(notistackError, "Pro tento email už existuje účet");
+    yield put(loadingEnd());
   }
+}
+
+export function* signInAfterSignUp({ payload: { user, additionalData } }) {
+  yield getSnapshotFromUserAuth(user, additionalData);
 }
 
 export function* onGoogleSignInStart() {
@@ -103,12 +123,17 @@ export function* onSignUpStart() {
   yield takeLatest(userActionTypes.SIGN_UP_START, signUp);
 }
 
+export function* onSignUpSuccess() {
+  yield takeLatest(userActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
+}
+
 export function* userSagas() {
   yield all([
     call(onGoogleSignInStart),
     call(onEmailSignIn),
     call(onCheckUserSession),
     call(onSignOutStart),
-    call(onSignUpStart)
+    call(onSignUpStart),
+    call(onSignUpSuccess)
   ]);
 }

@@ -50,7 +50,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   const snapShot = await userRef.get();
 
-  if (!snapShot.exist) {
+  if (!snapShot.exists) {
     const { displayName, email, photoURL } = userAuth;
     const createAt = new Date();
 
@@ -105,11 +105,20 @@ export const convertWinesSnapshotToMap = collections => {
 
 export const convertCollectionAllOrdersToMap = collections => {
   const transformedCollection = collections.docs.map(doc => {
-    const { celkem, items } = doc.data();
+    const { celkem, items, userRef } = doc.data();
+    const userSnapshot = userRef.get().then(doc => {
+      if (doc.exists) {
+        return doc.data().displayName;
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    });
     return {
       celkem,
       id: doc.id,
-      items
+      items,
+      userSnapshot
     };
   });
   return transformedCollection;

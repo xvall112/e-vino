@@ -25,7 +25,7 @@ const App = ({ currentUser, checkUserSession }) => {
   useEffect(() => {
     checkUserSession();
     return () => {
-      unsubscribeFromAuth();
+      /*  unsubscribeFromAuth(); */
     };
   }, []);
 

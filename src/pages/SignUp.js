@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { auth, createUserProfileDocument } from "../firebase/firebase.utils";
 
 import { connect } from "react-redux";
 import { signUpStart } from "../redux/user/user.actions";
@@ -41,8 +40,10 @@ const SignUp = ({ singUpStart }) => {
       passwordConfirmation: ""
     },
     validationSchema: validationSchema,
-    onSubmit: async values => {
-      singUpStart(values.email, values.password, values.name);
+    onSubmit: values => {
+      const displayName = JSON.stringify(values.name, null, 2);
+      const { email, password } = values;
+      singUpStart({ email, password, displayName });
       formik.resetForm({});
       /*   try {
         const { user } = await auth.createUserWithEmailAndPassword(
@@ -184,8 +185,7 @@ const SignUp = ({ singUpStart }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  singUpStart: (email, password, name) =>
-    dispatch(signUpStart({ email, password, name }))
+  singUpStart: userCredential => dispatch(signUpStart(userCredential))
 });
 
 const Wrapper = styled.section`
