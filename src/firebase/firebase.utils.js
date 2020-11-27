@@ -19,22 +19,24 @@ export const addOrderToFirestore = async items => {
   const {
     payload: { cartItems, currentUser, total }
   } = items;
-  const createAt = new Date();
+  const actualDate = new Date();
+  const createAt = firebase.firestore.Timestamp.fromDate(new Date());
   const userRef = firestore.collection("users").doc(currentUser.id);
+  const { id, displayName, email } = currentUser;
   const ordersRef = firestore.collection("orders");
 
   await ordersRef
     .add({
       items: cartItems,
-      userRef: userRef,
+      user: { id, displayName, email },
       celkem: total,
       date: createAt
     })
-    .then(function(docRef) {
-      const newOrdersRef = firestore.collection("orders").doc(docRef.id);
+    .then(docRef => {
+      const orderId = docRef.id;
       userRef.update({
         orders: firebase.firestore.FieldValue.arrayUnion({
-          orderRef: newOrdersRef
+          orderId
         })
       });
     })
@@ -105,20 +107,14 @@ export const convertWinesSnapshotToMap = collections => {
 
 export const convertCollectionAllOrdersToMap = collections => {
   const transformedCollection = collections.docs.map(doc => {
-    const { celkem, items, userRef } = doc.data();
-    const userSnapshot = userRef.get().then(doc => {
-      if (doc.exists) {
-        return doc.data().displayName;
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    });
+    const { celkem, items, user, date } = doc.data();
+
     return {
       celkem,
       id: doc.id,
       items,
-      userSnapshot
+      user,
+      date
     };
   });
   return transformedCollection;

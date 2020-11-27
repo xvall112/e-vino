@@ -26,7 +26,7 @@ const MainOffer = ({ wines, fetchWinesStart }) => {
       <Container>
         <h1>Main Offer</h1>
 
-        <Grid container justify="center" alignItems="center" spacing={5}>
+        <Grid container justify="center" alignItems="center" spacing={2}>
           {wines.map(item => {
             return <Item item={item} key={item.id} />;
           })}

@@ -72,8 +72,8 @@ export function* signOut() {
   try {
     yield auth.signOut();
     yield put(signOutSuccess());
-    yield call(notistackSuccess, "Jste Odhlášen");
     yield put(loadingEnd());
+    yield call(notistackSuccess, "Jste Odhlášen");
   } catch (error) {
     yield put(signOutFailure(error));
     yield put(loadingEnd());

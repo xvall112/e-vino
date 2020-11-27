@@ -12,17 +12,23 @@ import imgBile from "../images/whiteWine.png";
 const Item = ({ item, addItem }) => {
   const { image, druh, color, rocnik, name, price } = item;
   return (
-    <Grid item xs={6} md={3}>
+    <Grid item xs={6} md={4} lg={3}>
       <Wrapper>
         {color === "červené" ? <img src={imgCervene} /> : <img src={imgBile} />}
         <div className="info">
           <Grid container direction="row" justify="space-around">
-            <Chip size="small" label={druh} />
-            <Chip size="small" label={color} />
-            <Chip size="small" label={rocnik} />
+            <Grid item>
+              <Chip size="small" label={druh} />
+            </Grid>
+            <Grid item>
+              <Chip size="small" label={color} />
+            </Grid>
+            <Grid item>
+              <Chip size="small" label={rocnik} />
+            </Grid>
           </Grid>
         </div>
-        <h3>{name}</h3>
+        <h5>{name}</h5>
         <Grid item></Grid>
         <Grid container direction="row" justify="center">
           <Grid item>
@@ -51,6 +57,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const Wrapper = styled.section`
+  padding-top: 20px;
+  .MuiChip-label {
+    font-size: 15px;
+  }
   text-align: center;
   h3 {
     margin: 10px;

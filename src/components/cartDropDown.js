@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import { createStructuredSelector } from "reselect";
 import { selectCartItems } from "../redux/cart/cart.selectors";
 import { toggleCartHidden } from "../redux/cart/cart.action";
+import Container from "@material-ui/core/Container";
 
 import ItemCart from "./itemCart";
 
@@ -18,34 +19,38 @@ const CartDropDown = ({ cartItems, history, dispatch }) => {
   /* const { cartItems } = useContext(CartContext); */
   return (
     <Wrapper>
-      <div className="cart-dropdown">
-        <Card>
-          <CardContent>
-            <h2>Košík</h2>
-            <div className="cart-item">
-              {cartItems.length ? (
-                cartItems.map(cartItem => {
-                  return <ItemCart key={cartItem.id} item={cartItem} />;
-                })
-              ) : (
-                <p>Váš košík je prázdný</p>
-              )}
-            </div>
-            <Button
-              onClick={() => {
-                history.push("checkout");
-                dispatch(toggleCartHidden());
-              }}
-              variant="contained"
-              color="primary"
-              fullWidth
-              disabled={cartItems.length ? false : true}
-            >
-              Do Košíku
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <Container>
+        <Grid container direction="row" justify="flex-end">
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardContent>
+                <h2>Košík</h2>
+                <div className="cart-item">
+                  {cartItems.length ? (
+                    cartItems.map(cartItem => {
+                      return <ItemCart key={cartItem.id} item={cartItem} />;
+                    })
+                  ) : (
+                    <p>Váš košík je prázdný</p>
+                  )}
+                </div>
+                <Button
+                  onClick={() => {
+                    history.push("checkout");
+                    dispatch(toggleCartHidden());
+                  }}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  disabled={cartItems.length ? false : true}
+                >
+                  Do Košíku
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
     </Wrapper>
   );
 };
@@ -57,15 +62,13 @@ const mapStateToProps = createStructuredSelector({
 const Wrapper = styled.div`
   z-index: 10000;
   position: absolute;
-  top: 50px;
-  right: 30px;
+  top: 60px;
+  right: 0px;
+  width: 100%;
 
-  .cart-dropdown {
-    width: 400px;
-  }
   .cart-item {
     overflow: auto;
-    max-height: 200px;
+    height: 100%;
   }
 `;
 export default withRouter(connect(mapStateToProps)(CartDropDown));

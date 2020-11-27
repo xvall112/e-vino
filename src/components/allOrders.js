@@ -13,6 +13,8 @@ import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
+import AllOrdersTableRow from "./allOrdersTableRow";
+
 import { selectAllOrders } from "../redux/orders/orders.selector";
 import { fetchOrdersStart } from "../redux/orders/orders.action";
 
@@ -28,36 +30,21 @@ export const AllOrders = ({ allOrders, fetchAllOrders }) => {
   return (
     <Container>
       <div>
-        {allOrders.map(order => {
-          return (
-            <div key={order.id}>
-              <div>{order.id}</div>
-
-              <div>
-                {order.items.map(item => {
-                  return (
-                    <div key={item.id}>
-                      <div>{item.name}</div>
-                      <div>{item.quantity}</div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div>{order.celkem}</div>
-            </div>
-          );
-        })}
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
                 <TableCell />
-                <TableCell>ID</TableCell>
-                <TableCell align="right">Celkem</TableCell>
-                <TableCell align="right">Uzivatel</TableCell>
+                <TableCell>Id objednavky</TableCell>
+                <TableCell>Datum</TableCell>
+                <TableCell>Celkem</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody></TableBody>
+            <TableBody>
+              {allOrders.map(order => (
+                <AllOrdersTableRow key={order.id} order={order} />
+              ))}
+            </TableBody>
           </Table>
         </TableContainer>
       </div>

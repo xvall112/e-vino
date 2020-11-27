@@ -54,11 +54,12 @@ const CheckoutItems = ({
                         <b>{item.name}</b>
                       </TableCell>
                       <TableCell align="right">
-                        <Button onClick={() => removeItem(item)}>
-                          &#10094;
-                        </Button>
-                        {item.quantity}
-                        <Button onClick={() => addItem(item)}>&#10095;</Button>
+                        <div className="button">
+                          <span onClick={() => removeItem(item)}>&#10094;</span>
+
+                          {item.quantity}
+                          <span onClick={() => addItem(item)}>&#10095;</span>
+                        </div>
                       </TableCell>
                       <TableCell align="right">
                         {" "}
@@ -116,6 +117,18 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const Wrapper = styled.div`
+  .button {
+    span {
+      padding: 10px;
+      cursor: pointer;
+    }
+  }
+  .MuiTableCell-body {
+    font-size: 15px;
+  }
+  .MuiTableCell-head {
+    font-size: 15px;
+  }
   img {
     width: 50px;
     margin: 0 auto;
