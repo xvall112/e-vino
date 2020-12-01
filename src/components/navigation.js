@@ -32,7 +32,6 @@ const Navigation = loading => {
                 </Link>
               </Grid>
               <GridIcon>
-                <Link to="/admin">admin</Link>
                 <ProfileIcon />
                 <CartIcon />
               </GridIcon>

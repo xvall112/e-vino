@@ -7,7 +7,9 @@ const ItemCart = ({ item }) => {
   return (
     <Wrapper>
       <Grid container direction="row" alignItems="center">
-        <Grid item>{image}</Grid>
+        <Grid item>
+          <img src={image} />
+        </Grid>
         <Grid item>
           <div className="cartItem-price">
             <h6>{name}</h6> {quantity} x {price}

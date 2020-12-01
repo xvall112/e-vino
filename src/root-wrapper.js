@@ -51,7 +51,7 @@ Variables
     text-decoration: none;
     text-shadow:none;
     background-image: none;
-    color: inherit;
+    color: transparent;
   }
   img {
     

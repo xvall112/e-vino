@@ -51,7 +51,13 @@ const App = ({ currentUser, checkUserSession }) => {
           {currentUser ? <Redirect to="/" /> : <SignUp />}
         </Route>
         <Route path="/admin" exact>
-          <AdminPage />
+          {!currentUser ? (
+            <Redirect to="/" />
+          ) : currentUser.roles === "admin" ? (
+            <AdminPage />
+          ) : (
+            <Redirect to="/" />
+          )}
         </Route>
       </Switch>
     </>

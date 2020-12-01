@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
+import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../redux/user/user.selector";
 
+import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -27,7 +29,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
   };
 
   return (
-    <div>
+    <Wrapper>
       <Button onClick={handleClick}>
         <Avatar
           aria-controls="simple-menu"
@@ -37,14 +39,37 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
       </Button>
       {currentUser ? (
         <Menu
+          onClick={handleClose}
           id="simple-menu"
           anchorEl={anchorEl}
           keepMounted
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
+          <MenuItem>
+            <div className="items">
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+              >
+                <Avatar src={currentUser.photoURL} />
+                <div className="profile-item_name">
+                  {currentUser.displayName}
+                </div>
+                <div className="profile-item_email">{currentUser.email}</div>
+              </Grid>
+            </div>
+          </MenuItem>
           <MenuItem>Moje Objednávky</MenuItem>
-          <MenuItem onClick={handleClose}>
+          {currentUser.roles === "admin" && (
+            <Link to="/admin">
+              <MenuItem>Admin</MenuItem>
+            </Link>
+          )}
+
+          <MenuItem>
             <Button
               onClick={signOutStart}
               fullWidth
@@ -80,7 +105,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
           </MenuItem>
         </Menu>
       )}
-    </div>
+    </Wrapper>
   );
 };
 
@@ -94,4 +119,9 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
+const Wrapper = styled.div`
+  .items {
+    background-color: green;
+  }
+`;
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileIcon);

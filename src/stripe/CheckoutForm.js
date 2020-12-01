@@ -1,63 +1,114 @@
-import React from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import React, { useState, useEffect } from "react";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import styled from "styled-components";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CheckIcon from "@material-ui/icons/Check";
+
 import Button from "@material-ui/core/Button";
 
-import CardSection from "./CardSection";
-
-const CheckoutForm = () => {
+export default function CheckoutForm({ total }) {
+  const [succeeded, setSucceeded] = useState(false);
+  const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const [clientSecret, setClientSecret] = useState("");
   const stripe = useStripe();
   const elements = useElements();
 
-  const handleSubmit = async event => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
-    event.preventDefault();
+  useEffect(() => {
+    // Create PaymentIntent as soon as the page loads
+    window
+      .fetch("/create-payment-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ total: total })
+      })
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        setClientSecret(data.clientSecret);
+      });
+  }, []);
 
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
-
-    const result = await stripe.confirmCardPayment("{CLIENT_SECRET}", {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: "Jenny Rosen"
+  const cardStyle = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: "Arial, sans-serif",
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#32325d"
         }
-      }
-    });
-
-    if (result.error) {
-      // Show error to your customer (e.g., insufficient funds)
-      console.log(result.error.message);
-    } else {
-      // The payment has been processed!
-      if (result.paymentIntent.status === "succeeded") {
-        // Show a success message to your customer
-        // There's a risk of the customer closing the window before callback
-        // execution. Set up a webhook or plugin to listen for the
-        // payment_intent.succeeded event that handles any business critical
-        // post-payment actions.
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a"
       }
     }
   };
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <CardSection />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          disabled={!stripe}
-        >
-          Zaplatit
-        </Button>
-      </form>
-    </div>
-  );
-};
 
-export default CheckoutForm;
+  const handleChange = async event => {
+    // Listen for changes in the CardElement
+    // and display any errors as the customer types their card details
+    setDisabled(event.empty);
+    setError(event.error ? event.error.message : "");
+  };
+
+  const handleSubmit = async ev => {
+    ev.preventDefault();
+    setProcessing(true);
+
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement)
+      }
+    });
+
+    if (payload.error) {
+      setError(`Payment failed ${payload.error.message}`);
+      setProcessing(false);
+    } else {
+      setError(null);
+      setProcessing(false);
+      setSucceeded(true);
+    }
+  };
+
+  return (
+    <form id="payment-form" onSubmit={handleSubmit}>
+      <CardElement
+        id="card-element"
+        options={cardStyle}
+        onChange={handleChange}
+      />
+      <Button
+        fullWidth
+        id="submit"
+        variant="contained"
+        color="primary"
+        disabled={processing || disabled || succeeded}
+        onClick={handleSubmit}
+      >
+        {processing ? (
+          <CircularProgress />
+        ) : succeeded ? (
+          <>
+            <CheckIcon /> ZAPLACENO
+          </>
+        ) : (
+          <>ZAPLATIT {total}Kč</>
+        )}
+      </Button>
+      {/* Show any error that happens when processing the payment */}
+      {error && (
+        <div className="card-error" role="alert">
+          {error}
+        </div>
+      )}
+    </form>
+  );
+}

@@ -21,11 +21,18 @@ const CARD_ELEMENT_OPTIONS = {
 };
 
 const CardSection = () => {
+  const handleChange = async event => {
+    // Listen for changes in the CardElement
+    // and display any errors as the customer types their card details
+    setDisabled(event.empty);
+    setError(event.error ? event.error.message : "");
+  };
+
   return (
     <Wrapper>
       <label>
         Card details
-        <CardElement options={CARD_ELEMENT_OPTIONS} />
+        <CardElement options={CARD_ELEMENT_OPTIONS} onChange={handleChange} />
       </label>
     </Wrapper>
   );
