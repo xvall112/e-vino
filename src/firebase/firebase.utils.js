@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import "firebase/storage";
 
 const config = {
   apiKey: "AIzaSyABOr3Vj_-gy7GPoAdRWes2R351oWNwb20",
@@ -90,9 +91,10 @@ export const addWines = () => {
 
 export const convertWinesSnapshotToMap = collections => {
   const transformedCollection = collections.docs.map(doc => {
-    const { name, price, obsah, color, rocnik, druh } = doc.data();
+    const { name, price, obsah, color, rocnik, druh, image } = doc.data();
 
     return {
+      image,
       name,
       price,
       obsah,
@@ -131,6 +133,7 @@ export const getCurrentUser = () => {
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+export const storageRef = firebase.storage().ref();
 
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({

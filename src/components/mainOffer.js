@@ -21,6 +21,7 @@ const MainOffer = ({ wines, fetchWinesStart }) => {
   useEffect(() => {
     fetchWinesStart();
   }, []);
+  console.log(wines);
   return (
     <Wrapper>
       <Container>

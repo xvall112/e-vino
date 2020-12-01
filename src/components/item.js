@@ -6,15 +6,13 @@ import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 
-import imgCervene from "../images/redWine.png";
-import imgBile from "../images/whiteWine.png";
-
 const Item = ({ item, addItem }) => {
   const { image, druh, color, rocnik, name, price } = item;
+
   return (
-    <Grid item xs={6} md={4} lg={3}>
+    <Grid item xs={6} sm={4} md={3} lg={3}>
       <Wrapper>
-        {color === "červené" ? <img src={imgCervene} /> : <img src={imgBile} />}
+        <img src={image} />
         <div className="info">
           <Grid container direction="row" justify="space-around">
             <Grid item>
@@ -28,7 +26,9 @@ const Item = ({ item, addItem }) => {
             </Grid>
           </Grid>
         </div>
-        <h5>{name}</h5>
+        <div className="item-name">
+          <h5>{name}</h5>
+        </div>
         <Grid item></Grid>
         <Grid container direction="row" justify="center">
           <Grid item>
@@ -58,6 +58,7 @@ const mapDispatchToProps = dispatch => ({
 
 const Wrapper = styled.section`
   padding-top: 20px;
+
   .MuiChip-label {
     font-size: 15px;
   }
