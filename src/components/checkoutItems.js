@@ -49,7 +49,7 @@ const CheckoutItems = ({
                 <TableBody>
                   {cartItems.map(item => (
                     <TableRow key={item.id}>
-                      <TableCell align="center">{item.image}</TableCell>
+                      <TableCell align="center"><img src={item.image}/></TableCell>
                       <TableCell align="right">
                         <b>{item.name}</b>
                       </TableCell>

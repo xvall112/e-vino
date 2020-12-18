@@ -13,7 +13,7 @@ const Checkout = ({ total }) => {
     <div>
       <h2>Checkout page</h2>
       <CheckoutItems />
-      <StripeCheckoutButton price={total} />
+      
     </div>
   );
 };

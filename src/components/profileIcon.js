@@ -25,7 +25,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+console.log(currentUser);
   return (
     <div>
       <Button onClick={handleClick}>

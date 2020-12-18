@@ -40,7 +40,7 @@ const AllOrdersTableRow = ({ order }) => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {order.id}
+        {order.user.displayName}
         </TableCell>
         <TableCell component="th" scope="row">
           {order.date.toDate().toDateString()}

@@ -18,7 +18,9 @@ import ItemCart from "./itemCart";
 const CartDropDown = ({ cartItems, history, dispatch }) => {
   /* const { cartItems } = useContext(CartContext); */
   return (
-    <Wrapper>
+    <Wrapper onClick={() => {
+      dispatch(toggleCartHidden());
+    }}>
       <Container>
         <Grid container direction="row" justify="flex-end">
           <Grid item xs={12} md={4}>
@@ -63,12 +65,14 @@ const Wrapper = styled.div`
   z-index: 10000;
   position: absolute;
   top: 60px;
-  right: 0px;
-  width: 100%;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
 
   .cart-item {
     overflow: auto;
     height: 100%;
+    max-height: 50vh;
   }
 `;
 export default withRouter(connect(mapStateToProps)(CartDropDown));

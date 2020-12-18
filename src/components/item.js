@@ -5,16 +5,18 @@ import { addItem } from "../redux/cart/cart.action";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { selectCurrentUser } from "../redux/user/user.selector";
+import { createStructuredSelector } from "reselect";
 
-import imgCervene from "../images/redWine.png";
-import imgBile from "../images/whiteWine.png";
-
-const Item = ({ item, addItem }) => {
+const Item = ({ item, addItem,currentUser }) => {
   const { image, druh, color, rocnik, name, price } = item;
+  console.log(image);
   return (
     <Grid item xs={6} md={4} lg={3}>
       <Wrapper>
-        {color === "červené" ? <img src={imgCervene} /> : <img src={imgBile} />}
+        <img src={image} />
         <div className="info">
           <Grid container direction="row" justify="space-around">
             <Grid item>
@@ -47,10 +49,20 @@ const Item = ({ item, addItem }) => {
             </Button>
           </Grid>
         </Grid>
+        {currentUser ? (currentUser.id === "1Zh2hy3lMLfMdy8BVWCvRFum79t1" ? (<Grid> <Button size="small" variant="outlined">upravit</Button> <IconButton aria-label="delete">
+          <DeleteIcon fontSize="small" />
+        </IconButton></Grid>) : null):null}
+      
+        
+        
       </Wrapper>
     </Grid>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+});
 
 const mapDispatchToProps = dispatch => ({
   addItem: item => dispatch(addItem(item))
@@ -78,4 +90,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default connect(null, mapDispatchToProps)(Item);
+export default connect(mapStateToProps, mapDispatchToProps)(Item);

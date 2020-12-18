@@ -53,11 +53,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const snapShot = await userRef.get();
 
   if (!snapShot.exists) {
-    const { displayName, email, photoURL } = userAuth;
+    const { displayName, email, photoURL, uid } = userAuth;
     const createAt = new Date();
 
     try {
       await userRef.set({
+        id: uid,
         displayName,
         email,
         createAt,
@@ -90,7 +91,7 @@ export const addWines = () => {
 
 export const convertWinesSnapshotToMap = collections => {
   const transformedCollection = collections.docs.map(doc => {
-    const { name, price, obsah, color, rocnik, druh } = doc.data();
+    const { name, price, obsah, color, rocnik, druh, image } = doc.data();
 
     return {
       name,
@@ -99,6 +100,7 @@ export const convertWinesSnapshotToMap = collections => {
       color,
       rocnik,
       druh,
+      image,
       id: doc.id
     };
   });

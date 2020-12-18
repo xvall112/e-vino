@@ -34,9 +34,9 @@ const App = ({ currentUser, checkUserSession }) => {
       <GlobalStyle />
       <TypographyStyle typography={typography} />
       <GoogleFont typography={typography} />
-      {/*  <CurrentUserContext.Provider value={currentUser}> */}
+     
       <Navigation />
-      {/*    </CurrentUserContext.Provider> */}
+      
       <Switch>
         <Route path="/" exact>
           <HomePage />
