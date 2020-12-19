@@ -37,7 +37,7 @@ const Item = ({ item, addItem, currentUser }) => {
         <Grid container direction="row" justify="center">
           <Grid item>
             <Button fullWidth variant="outlined" color="primary">
-              {price} <span> Kč</span>
+              {price} <span>Kč</span>
             </Button>
           </Grid>
           <Grid item>
