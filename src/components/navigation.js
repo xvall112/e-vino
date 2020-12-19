@@ -11,10 +11,12 @@ import ProfileIcon from "./profileIcon";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "../redux/user/user.selector";
 /* import { selectIsWinesFetching } from "../redux/directory/directory.selector"; */
 import { selectLoad } from "../redux/loading/loading.selector";
 
-const Navigation = loading => {
+const Navigation = ({ currentUser, loading }) => {
+  console.log(currentUser);
   return (
     <Wrapper>
       <AppBar position="fixed" color="default">
@@ -32,6 +34,12 @@ const Navigation = loading => {
                 </Link>
               </Grid>
               <GridIcon>
+                {currentUser ? (
+                  currentUser.id === "1Zh2hy3lMLfMdy8BVWCvRFum79t1" ? (
+                    <Link to="/admin">admin</Link>
+                  ) : null
+                ) : null}
+
                 <ProfileIcon />
                 <CartIcon />
               </GridIcon>
@@ -45,7 +53,8 @@ const Navigation = loading => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: selectLoad
+  loading: selectLoad,
+  currentUser: selectCurrentUser
 });
 
 const Wrapper = styled.section`

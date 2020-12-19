@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -19,6 +20,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
 
 const CheckoutItems = ({
   cartItems,
@@ -81,8 +83,14 @@ const CheckoutItems = ({
               </Table>
             </TableContainer>
           ) : (
-            <Grid container justify="center">
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              direction="column"
+            >
               <p>Košík je prázdný</p>
+              <Link to="/">pokračovat v nákupu </Link>
             </Grid>
           )}
           <Grid
@@ -91,15 +99,29 @@ const CheckoutItems = ({
             justify="space-around"
             alignItems="center"
           >
-            <span className="total">CELKEM: {total} Kč</span>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => addOrder({ cartItems, currentUser, total })}
-              disabled={cartItems.length === 0 ? true : false}
-            >
-              Objednat
-            </Button>
+            <Grid item>
+              <span className="total">CELKEM: {total} Kč</span>
+            </Grid>
+            <Grid item>
+              <Grid container direction="column" alignItems="center">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => addOrder({ cartItems, currentUser, total })}
+                  disabled={
+                    cartItems.length === 0 ? true : false || !currentUser
+                  }
+                >
+                  Objednat
+                </Button>
+                {!currentUser && (
+                  <Alert severity="info">
+                    pro objednání se <Link to="signIn">přihlášte </Link>
+                    nebo <Link to="signUp">registrujte</Link>
+                  </Alert>
+                )}
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Container>
@@ -119,6 +141,10 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const Wrapper = styled.div`
+  a {
+    color: blue;
+    text-decoration: underline;
+  }
   .button {
     span {
       padding: 10px;

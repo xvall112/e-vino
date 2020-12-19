@@ -34,9 +34,9 @@ const App = ({ currentUser, checkUserSession }) => {
       <GlobalStyle />
       <TypographyStyle typography={typography} />
       <GoogleFont typography={typography} />
-      {/*  <CurrentUserContext.Provider value={currentUser}> */}
+
       <Navigation />
-      {/*    </CurrentUserContext.Provider> */}
+
       <Switch>
         <Route path="/" exact>
           <HomePage />
@@ -51,10 +51,12 @@ const App = ({ currentUser, checkUserSession }) => {
           {currentUser ? <Redirect to="/" /> : <SignUp />}
         </Route>
         <Route path="/admin" exact>
-          {!currentUser ? (
-            <Redirect to="/" />
-          ) : currentUser.roles === "admin" ? (
-            <AdminPage />
+          {currentUser ? (
+            currentUser.id === "1Zh2hy3lMLfMdy8BVWCvRFum79t1" ? (
+              <AdminPage />
+            ) : (
+              <Redirect to="/" />
+            )
           ) : (
             <Redirect to="/" />
           )}

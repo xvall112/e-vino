@@ -22,7 +22,10 @@ export const AllOrders = ({ allOrders, fetchAllOrders }) => {
   }, []);
 
   return (
+    <>
+    
     <Container>
+    <h2>Objednavky</h2>
       <div>
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
@@ -43,6 +46,7 @@ export const AllOrders = ({ allOrders, fetchAllOrders }) => {
         </TableContainer>
       </div>
     </Container>
+    </>
   );
 };
 

@@ -14,7 +14,6 @@ const Checkout = ({ total, cartItems }) => {
     <div>
       <h2>Checkout page</h2>
       <CheckoutItems />
-      <StripeCheckoutButton total={total} />
     </div>
   );
 };

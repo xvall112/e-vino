@@ -54,11 +54,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const snapShot = await userRef.get();
 
   if (!snapShot.exists) {
-    const { displayName, email, photoURL } = userAuth;
+    const { displayName, email, photoURL, uid } = userAuth;
     const createAt = new Date();
 
     try {
       await userRef.set({
+        id: uid,
         displayName,
         email,
         createAt,
@@ -101,6 +102,7 @@ export const convertWinesSnapshotToMap = collections => {
       color,
       rocnik,
       druh,
+      image,
       id: doc.id
     };
   });
