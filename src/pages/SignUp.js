@@ -5,6 +5,8 @@ import * as yup from "yup";
 
 import { connect } from "react-redux";
 import { signUpStart } from "../redux/user/user.actions";
+import { createStructuredSelector } from "reselect";
+import { selectLoad } from "../redux/loading/loading.selector";
 
 /* components */
 import Button from "@material-ui/core/Button";
@@ -31,7 +33,7 @@ const validationSchema = yup.object({
   name: yup.string("Vložte jméno").required("Jméno není vyplňeno")
 });
 
-const SignUp = ({ singUpStart }) => {
+const SignUp = ({ singUpStart, loading }) => {
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -45,20 +47,6 @@ const SignUp = ({ singUpStart }) => {
       const { email, password } = values;
       singUpStart({ email, password, displayName });
       formik.resetForm({});
-      /*   try {
-        const { user } = await auth.createUserWithEmailAndPassword(
-          values.email,
-          values.password
-        );
-
-        await createUserProfileDocument(user, {
-          displayName: JSON.stringify(values.name, null, 2)
-        });
-
-        formik.resetForm({});
-      } catch (error) {
-        console.error(error);
-      } */
     }
   });
 
@@ -70,8 +58,7 @@ const SignUp = ({ singUpStart }) => {
         justify="center"
         alignItems="center"
       >
-        <h1>E-víno</h1>
-        <p>Registrace</p>
+        <h3>Registrace</h3>
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
@@ -161,13 +148,9 @@ const SignUp = ({ singUpStart }) => {
                       variant="contained"
                       fullWidth
                       type="submit"
-                      disabled={!formik.isValid || formik.isSubmitting}
+                      disabled={!formik.isValid || loading}
                     >
-                      {formik.isSubmitting ? (
-                        <CircularProgress />
-                      ) : (
-                        "Registrovat se"
-                      )}
+                      {loading ? <CircularProgress /> : "Registrovat se"}
                     </Button>
                   </Grid>
                 </Grid>
@@ -184,18 +167,27 @@ const SignUp = ({ singUpStart }) => {
   );
 };
 
+const mapStateToProps = createStructuredSelector({
+  loading: selectLoad
+});
+
 const mapDispatchToProps = dispatch => ({
   singUpStart: userCredential => dispatch(signUpStart(userCredential))
 });
 
 const Wrapper = styled.section`
+  margin-top: 40px;
   .register-button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    a {
+      text-decoration: underline;
+      color: blue;
+    }
   }
 `;
 const MainGrid = styled(Grid)`
   min-height: 90vh;
 `;
-export default connect(null, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

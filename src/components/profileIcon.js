@@ -27,7 +27,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-console.log(currentUser);
+
   return (
     <Wrapper>
       <Button onClick={handleClick}>
@@ -88,21 +88,20 @@ console.log(currentUser);
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose} variant="outlined">
-            <Link to="signIn">
+          <Link to="signIn">
+            <MenuItem onClick={handleClose} variant="outlined">
               <Button fullWidth variant="outlined" color="primary">
                 Přihlásit se
               </Button>
-            </Link>
-          </MenuItem>
-
-          <MenuItem onClick={handleClose}>
-            <Link to="signUp">
+            </MenuItem>
+          </Link>
+          <Link to="signUp">
+            <MenuItem onClick={handleClose}>
               <Button fullWidth variant="contained" color="primary">
                 Registrovat se
               </Button>
-            </Link>
-          </MenuItem>
+            </MenuItem>
+          </Link>
         </Menu>
       )}
     </Wrapper>

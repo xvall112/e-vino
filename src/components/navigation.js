@@ -12,11 +12,9 @@ import ProfileIcon from "./profileIcon";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../redux/user/user.selector";
-/* import { selectIsWinesFetching } from "../redux/directory/directory.selector"; */
 import { selectLoad } from "../redux/loading/loading.selector";
 
 const Navigation = ({ currentUser, loading }) => {
-  console.log(currentUser);
   return (
     <Wrapper>
       <AppBar position="fixed" color="default">
@@ -45,7 +43,7 @@ const Navigation = ({ currentUser, loading }) => {
               </GridIcon>
             </Grid>
           </Container>
-          {loading.loading && <LinearProgress />}
+          {loading && <LinearProgress />}
         </div>
       </AppBar>
     </Wrapper>

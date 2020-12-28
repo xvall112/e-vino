@@ -12,7 +12,7 @@ import StripeCheckoutButton from "../components/stripeButton";
 const Checkout = ({ total, cartItems }) => {
   return (
     <div>
-      <h2>Checkout page</h2>
+      <h2>Košík</h2>
       <CheckoutItems />
     </div>
   );

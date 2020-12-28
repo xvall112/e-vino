@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { signInWithGoogle, auth } from "../firebase/firebase.utils";
+import { createStructuredSelector } from "reselect";
+
 /* components */
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -12,21 +13,24 @@ import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ForgetPassword from "../components/forgetPassword";
 
 import {
   googleSignInStart,
   emailSignInStart
 } from "../redux/user/user.actions";
 
+import { selectLoad } from "../redux/loading/loading.selector";
+
 const validationSchema = yup.object({
   email: yup
     .string("Vložte email")
-    .email("Jejda máte špatný tvar emailu")
+    .email("špatný tvar emailu")
     .required("Email není vyplňen"),
   password: yup.string("Vložte heslo").required("Heslo není vyplňeno")
 });
 
-const SignIn = ({ googleSignInStart, emailSignInStart }) => {
+const SignIn = ({ googleSignInStart, emailSignInStart, loading }) => {
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -35,7 +39,6 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
     validationSchema: validationSchema,
     onSubmit: async values => {
       emailSignInStart(values.email, values.password);
-
       formik.resetForm({});
     }
   });
@@ -48,8 +51,7 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
         justify="center"
         alignItems="center"
       >
-        <h1>E-víno</h1>
-        <p>Přihlášení</p>
+        <h3>Přihlášení</h3>
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
@@ -103,13 +105,9 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
                       variant="contained"
                       fullWidth
                       type="submit"
-                      disabled={formik.isSubmitting}
+                      disabled={loading ? true : false}
                     >
-                      {formik.isSubmitting ? (
-                        <CircularProgress />
-                      ) : (
-                        "Přihlásit se"
-                      )}
+                      {loading ? <CircularProgress /> : "Přihlásit se"}
                     </Button>
                   </Grid>
                 </Grid>
@@ -122,21 +120,29 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
                   variant="contained"
                   fullWidth
                   onClick={googleSignInStart}
+                  disabled={loading ? true : false}
                 >
-                  Přihlásit přes Google
+                  {loading ? <CircularProgress /> : "Přihlásit přes Google"}
                 </Button>
               </Grid>
             </CardContent>
           </Card>
           <div className="register-button">
-            <span>Nemáš účet? </span>
-            <Link to="signUp"> Registrovat se</Link>
+            <div className="register-button_registrovat">
+              <span>Nemáš účet? </span>
+              <Link to="signUp"> Registrovat se</Link>
+            </div>
+            <ForgetPassword />
           </div>
         </Grid>
       </MainGrid>
     </Wrapper>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  loading: selectLoad
+});
 
 const mapDispatchToProps = dispatch => ({
   googleSignInStart: () => dispatch(googleSignInStart()),
@@ -145,13 +151,28 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const Wrapper = styled.section`
+  margin-top: 40px;
   .register-button {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    a {
+      text-decoration: underline;
+      color: blue;
+    }
+  }
+  .register-button_registrovat {
     display: flex;
     flex-direction: column;
-    align-items: center;
+  }
+  .forgotPassword {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
   }
 `;
 const MainGrid = styled(Grid)`
   min-height: 90vh;
 `;
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

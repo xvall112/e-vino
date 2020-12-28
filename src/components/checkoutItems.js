@@ -35,7 +35,12 @@ const CheckoutItems = ({
   return (
     <Wrapper>
       <Container>
-        <Grid container>
+        <Grid
+          container
+          justify="space-around"
+          alignItems="center"
+          direction="column"
+        >
           {cartItems.length ? (
             <TableContainer>
               <Table aria-label="simple table" padding="checkbox">
@@ -85,12 +90,16 @@ const CheckoutItems = ({
           ) : (
             <Grid
               container
-              justify="center"
+              justify="space-around"
               alignItems="center"
               direction="column"
             >
-              <p>Košík je prázdný</p>
-              <Link to="/">pokračovat v nákupu </Link>
+              <h5>Košík je prázdný</h5>
+              <Link to="/">
+                <Button variant="outlined" color="primary">
+                  pokračovat v nákupu
+                </Button>
+              </Link>
             </Grid>
           )}
           <Grid
@@ -116,8 +125,8 @@ const CheckoutItems = ({
                 </Button>
                 {!currentUser && (
                   <Alert severity="info">
-                    pro objednání se <Link to="signIn">přihlášte </Link>
-                    nebo <Link to="signUp">registrujte</Link>
+                    pro objednání musíte <Link to="signIn">přihlásit se </Link>
+                    nebo <Link to="signUp">registrovat se</Link>
                   </Alert>
                 )}
               </Grid>
@@ -141,6 +150,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const Wrapper = styled.div`
+  margin-top: 40px;
+  padding-bottom: 50px;
+
   a {
     color: blue;
     text-decoration: underline;

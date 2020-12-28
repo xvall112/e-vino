@@ -1,18 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
-import { addItem } from "../redux/cart/cart.action";
+
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteWines from "./deleteWines";
+
+import { connect } from "react-redux";
+import { addItem } from "../redux/cart/cart.action";
 import { selectCurrentUser } from "../redux/user/user.selector";
 import { createStructuredSelector } from "reselect";
 
 const Item = ({ item, addItem, currentUser }) => {
-  const { image, druh, color, rocnik, name, price } = item;
-  console.log(image);
+  const { image, druh, color, rocnik, name, price, id } = item;
   return (
     <Grid item xs={6} sm={4} md={3} lg={3}>
       <Wrapper>
@@ -53,14 +55,12 @@ const Item = ({ item, addItem, currentUser }) => {
         </Grid>
         {currentUser ? (
           currentUser.id === "1Zh2hy3lMLfMdy8BVWCvRFum79t1" ? (
-            <Grid>
+            <Grid container direction="row" justify="center">
               {" "}
               <Button size="small" variant="outlined">
                 upravit
               </Button>{" "}
-              <IconButton aria-label="delete">
-                <DeleteIcon fontSize="small" />
-              </IconButton>
+              <DeleteWines name={name} id={id} />
             </Grid>
           ) : null
         ) : null}

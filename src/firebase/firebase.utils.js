@@ -77,13 +77,14 @@ export const addWines = () => {
   const winesRef = firestore.collection("wines");
   try {
     winesRef.add({
-      name: "Solaris",
+      name: "Portske",
       price: 160,
       obsah: 0.7,
       color: "bílé",
       rocnik: 2020,
       druh: "suche",
-      image: ""
+      image:
+        "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FwhiteWine.png?alt=media&token=228fcd0e-9cd9-40d9-b1ee-bf6c71256062"
     });
   } catch (error) {
     console.log("error creating user", error.message);

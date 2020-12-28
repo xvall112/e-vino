@@ -8,7 +8,9 @@ import {
   signOutSuccess,
   signOutFailure,
   signUpSuccess,
-  signUpFailure
+  signUpFailure,
+  resetPasswordSuccess,
+  resetPasswordFailure
 } from "./user.actions";
 
 import {
@@ -34,20 +36,21 @@ export function* getSnapshotFromUserAuth(userAuth, addData) {
 }
 
 export function* signInWithGoogle() {
-  yield put(loadingEnd());
   try {
+    yield put(loadingStart());
     const { user } = yield auth.signInWithPopup(googleProvider);
     yield getSnapshotFromUserAuth(user);
+    yield put(loadingEnd());
   } catch (error) {
+    yield put(loadingEnd());
     yield put(signInFailure(error));
     yield call(notistackError, "Něco se pokazilo, zkuzte znovu");
-    yield put(loadingEnd());
   }
 }
 
 export function* signInWithEmail({ payload: { email, password } }) {
-  yield put(loadingStart());
   try {
+    yield put(loadingStart());
     const { user } = yield auth.signInWithEmailAndPassword(email, password);
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
@@ -99,6 +102,18 @@ export function* signUp({ payload: { email, password, displayName } }) {
   }
 }
 
+function* sendPasswordResetEmailSaga({ payload }) {
+  yield console.log(payload);
+  try {
+    yield auth.sendPasswordResetEmail(payload);
+    yield put(resetPasswordSuccess());
+    yield call(notistackSuccess, "Resetování hesla bylo odesláno na email");
+  } catch (error) {
+    yield put(resetPasswordFailure(error));
+    yield call(notistackError, "Pro tento email neexistuje účet");
+  }
+}
+
 export function* signInAfterSignUp({ payload: { user, additionalData } }) {
   yield getSnapshotFromUserAuth(user, additionalData);
 }
@@ -127,6 +142,13 @@ export function* onSignUpSuccess() {
   yield takeLatest(userActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
 }
 
+export function* onResetPasswordStart() {
+  yield takeLatest(
+    userActionTypes.RESET_PASSWORD_START,
+    sendPasswordResetEmailSaga
+  );
+}
+
 export function* userSagas() {
   yield all([
     call(onGoogleSignInStart),
@@ -134,6 +156,7 @@ export function* userSagas() {
     call(onCheckUserSession),
     call(onSignOutStart),
     call(onSignUpStart),
-    call(onSignUpSuccess)
+    call(onSignUpSuccess),
+    call(onResetPasswordStart)
   ]);
 }
