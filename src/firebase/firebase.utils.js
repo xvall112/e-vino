@@ -73,21 +73,23 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-export const addWines = () => {
+export const addWines = ({
+  image,
+  values: { color, druh, name, obsah, price, rocnik }
+}) => {
   const winesRef = firestore.collection("wines");
   try {
     winesRef.add({
-      name: "Portske",
-      price: 160,
-      obsah: 0.7,
-      color: "bílé",
-      rocnik: 2020,
-      druh: "suche",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FwhiteWine.png?alt=media&token=228fcd0e-9cd9-40d9-b1ee-bf6c71256062"
+      name,
+      price,
+      obsah,
+      color,
+      rocnik,
+      druh,
+      image
     });
   } catch (error) {
-    console.log("error creating user", error.message);
+    console.log("error add wines", error.message);
   }
 };
 

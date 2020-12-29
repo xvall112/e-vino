@@ -2,13 +2,16 @@ import { takeLatest, call, put, all } from "redux-saga/effects";
 import { directoryActionTypes } from "./directory.type";
 import {
   firestore,
-  convertWinesSnapshotToMap
+  convertWinesSnapshotToMap,
+  addWines
 } from "../../firebase/firebase.utils";
 import {
   fetchWinesSuccess,
   fetchWinesFailure,
   deleteWinesFailure,
-  deleteWinesSuccess
+  deleteWinesSuccess,
+  addWinesFailure,
+  addWinesSuccess
 } from "./directory.actions";
 import { loadingStart, loadingEnd } from "../loading/loading.actions";
 
@@ -45,6 +48,20 @@ export function* deleteWines({ payload }) {
   }
 }
 
+export function* addWine({ payload: { image, values } }) {
+  try {
+    yield put(loadingStart());
+    yield call(addWines, { image, values });
+    yield put(addWinesSuccess());
+    yield put(loadingEnd());
+    yield call(notistackSuccess, "Přidáno");
+  } catch (error) {
+    yield put(addWinesFailure(error.message));
+    yield put(loadingEnd());
+    yield call(notistackError, "Něco se pokazilo, zkuzte znovu");
+  }
+}
+
 export function* onFetchWinesStart() {
   yield takeLatest(
     directoryActionTypes.FETCH_COLLECTIONS_START,
@@ -55,6 +72,14 @@ export function* onDeleteWinesStart() {
   yield takeLatest(directoryActionTypes.DELETE_WINES_START, deleteWines);
 }
 
+export function* onAddWinesStart() {
+  yield takeLatest(directoryActionTypes.ADD_WINES_START, addWine);
+}
+
 export function* directorySagas() {
-  yield all([call(onFetchWinesStart), call(onDeleteWinesStart)]);
+  yield all([
+    call(onFetchWinesStart),
+    call(onDeleteWinesStart),
+    call(onAddWinesStart)
+  ]);
 }

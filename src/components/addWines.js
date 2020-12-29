@@ -19,20 +19,54 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-import { resetPasswordStart } from "../redux/user/user.actions";
+import { addWinesStart } from "../redux/directory/directory.actions";
+
 const validationSchema = yup.object({
-  email: yup
-    .string("Vložte email")
-    .email("špatný tvar emailu")
-    .required("Email není vyplňen")
+  name: yup.string("vyplňte název").required("vyplňte název"),
+  price: yup
+    .number("zadej cenu")
+    .min(1, "cena musí být více než 1")
+    .required("zadej cenu"),
+  obsah: yup
+    .number("zadej obsah")
+    .min(0.1, "obsah musí být více než 0.1")
+    .required("zadej obsah"),
+  color: yup.string("zadej barvu").required("zadej barvu"),
+  rocnik: yup
+    .number("zadej ročník")
+    .max(2021, "ročník musí být méně než aktuální rok")
+    .required("zadej ročník"),
+  druh: yup.string("zadej druh").required("zadej druh")
 });
 
-const AddWines = ({ resetPasswordStart }) => {
+const AddWines = ({ addWines }) => {
   const [open, setOpen] = useState(false);
-  const [color, setColor] = useState("bílé");
+  const [image, setImage] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FwhiteWine.png?alt=media&token=228fcd0e-9cd9-40d9-b1ee-bf6c71256062"
+  );
 
-  const handleChange = event => {
-    setColor(event.target.value);
+  const changeImg = () => {
+    switch (formik.values.color) {
+      case "bílé":
+        setImg(
+          "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FwhiteWine.png?alt=media&token=228fcd0e-9cd9-40d9-b1ee-bf6c71256062"
+        );
+        break;
+      case "červené":
+        setImg(
+          "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FredWine.png?alt=media&token=17f66421-70ea-429d-9f85-09fbeca80aab"
+        );
+        break;
+      case "růžové":
+        setImg(
+          "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FpinkWine.png?alt=media&token=84e087c2-fce9-4102-ac8a-ee29891ce59c"
+        );
+        break;
+      default:
+        setImg(
+          "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FwhiteWine.png?alt=media&token=228fcd0e-9cd9-40d9-b1ee-bf6c71256062"
+        );
+    }
   };
 
   const handleClickOpen = () => {
@@ -48,17 +82,18 @@ const AddWines = ({ resetPasswordStart }) => {
       name: "",
       price: "",
       obsah: "",
-      color: color,
+      color: "",
       rocnik: "",
       druh: ""
     },
     validationSchema: validationSchema,
     onSubmit: async values => {
+      addWines({ values, image });
       formik.resetForm({});
     }
   });
   return (
-    <div>
+    <Wrapper>
       <Button variant="contained" onClick={handleClickOpen}>
         {" "}
         <div className="addWine">Přidat</div>
@@ -71,6 +106,16 @@ const AddWines = ({ resetPasswordStart }) => {
       >
         <form onSubmit={formik.handleSubmit}>
           <DialogTitle id="form-dialog-title">Přidat víno</DialogTitle>
+          <img
+            style={{ height: "100px", margin: "0 auto" }}
+            src={
+              formik.values.color === "bílé"
+                ? "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FwhiteWine.png?alt=media&token=228fcd0e-9cd9-40d9-b1ee-bf6c71256062"
+                : formik.values.color === "červené"
+                ? "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FredWine.png?alt=media&token=17f66421-70ea-429d-9f85-09fbeca80aab"
+                : "https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FpinkWine.png?alt=media&token=84e087c2-fce9-4102-ac8a-ee29891ce59c"
+            }
+          />
           <DialogContent>
             <TextField
               variant="outlined"
@@ -78,7 +123,7 @@ const AddWines = ({ resetPasswordStart }) => {
               margin="dense"
               id="name"
               label="Název"
-              type="name"
+              type="text"
               fullWidth
               value={formik.values.name}
               onChange={formik.handleChange}
@@ -109,13 +154,17 @@ const AddWines = ({ resetPasswordStart }) => {
               error={formik.touched.obsah && Boolean(formik.errors.obsah)}
               helperText={formik.touched.obsah && formik.errors.obsah}
             />
-            <FormControl variant="outlined" margin="dense">
-              <InputLabel id="color">Barva</InputLabel>
+            <FormControl
+              margin="dense"
+              fullWidth
+              error={formik.touched.color && Boolean(formik.errors.color)}
+            >
+              <InputLabel id="color-label">Barva</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
+                labelId="color-label"
                 id="color"
-                value={color}
-                onChange={handleChange}
+                value={formik.values.color}
+                onChange={formik.handleChange("color")}
               >
                 <MenuItem value={"bílé"}>Bílé</MenuItem>
                 <MenuItem value={"červené"}>Červené</MenuItem>
@@ -134,6 +183,24 @@ const AddWines = ({ resetPasswordStart }) => {
               error={formik.touched.rocnik && Boolean(formik.errors.rocnik)}
               helperText={formik.touched.rocnik && formik.errors.rocnik}
             />
+            <FormControl
+              margin="dense"
+              id="druh"
+              fullWidth
+              error={formik.touched.druh && Boolean(formik.errors.druh)}
+            >
+              <InputLabel id="druh-label">Druh</InputLabel>
+              <Select
+                labelId="druh-label"
+                id="druh"
+                value={formik.values.druh}
+                onChange={formik.handleChange("druh")}
+              >
+                <MenuItem value={"suché"}>Suché</MenuItem>
+                <MenuItem value={"sladké"}>Sladké</MenuItem>
+                <MenuItem value={"polosuché"}>Polosuché</MenuItem>
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
@@ -145,12 +212,13 @@ const AddWines = ({ resetPasswordStart }) => {
           </DialogActions>
         </form>
       </Dialog>
-    </div>
+    </Wrapper>
   );
 };
 
 const mapDispatchToProps = dispatch => ({
-  resetPasswordStart: email => dispatch(resetPasswordStart(email))
+  addWines: ({ values, image }) => dispatch(addWinesStart({ values, image }))
 });
 
+const Wrapper = styled.div``;
 export default connect(null, mapDispatchToProps)(AddWines);

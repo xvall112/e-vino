@@ -27,3 +27,17 @@ export const deleteWinesFailure = ErrorMessage => ({
   type: directoryActionTypes.DELETE_WINES_FAILURE,
   payload: ErrorMessage
 });
+
+export const addWinesStart = addWine => ({
+  type: directoryActionTypes.ADD_WINES_START,
+  payload: addWine
+});
+
+export const addWinesSuccess = () => ({
+  type: directoryActionTypes.ADD_WINES_SUCCESS
+});
+
+export const addWinesFailure = ErrorMessage => ({
+  type: directoryActionTypes.ADD_WINES_FAILURE,
+  payload: ErrorMessage
+});
