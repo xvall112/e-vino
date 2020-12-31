@@ -32,12 +32,6 @@ const Navigation = ({ currentUser, loading }) => {
                 </Link>
               </Grid>
               <GridIcon>
-                {currentUser ? (
-                  currentUser.id === "1Zh2hy3lMLfMdy8BVWCvRFum79t1" ? (
-                    <Link to="/admin">admin</Link>
-                  ) : null
-                ) : null}
-
                 <ProfileIcon />
                 <CartIcon />
               </GridIcon>
@@ -52,7 +46,7 @@ const Navigation = ({ currentUser, loading }) => {
 
 const mapStateToProps = createStructuredSelector({
   loading: selectLoad,
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
 const Wrapper = styled.section`

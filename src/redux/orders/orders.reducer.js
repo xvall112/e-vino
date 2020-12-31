@@ -1,8 +1,9 @@
 import { ordersActionTypes } from "./orders.type";
 
 const initialState = {
+  currentUserOrders: [],
   orders: [],
-  errorMessage: undefined
+  errorMessage: undefined,
 };
 
 const ordersReducer = (state = initialState, action) => {
@@ -12,12 +13,18 @@ const ordersReducer = (state = initialState, action) => {
     case ordersActionTypes.FETCH_ORDERS_SUCCESS:
       return {
         ...state,
-        orders: action.payload
+        orders: action.payload,
       };
+    case ordersActionTypes.FETCH_CURRENT_USER_ORDERS_SUCCESS:
+      return {
+        ...state,
+        currentUserOrders: action.payload,
+      };
+    case ordersActionTypes.FETCH_CURRENT_USER_ORDERS_FAILURE:
     case ordersActionTypes.FETCH_ORDERS_FAILURE:
       return {
         ...state,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     default:
       return state;

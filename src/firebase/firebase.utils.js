@@ -11,37 +11,51 @@ const config = {
   storageBucket: "evino-30926.appspot.com",
   messagingSenderId: "124959067696",
   appId: "1:124959067696:web:565e3a6e996b9863f227f5",
-  measurementId: "G-SH7D914J5Q"
+  measurementId: "G-SH7D914J5Q",
 };
 
 firebase.initializeApp(config);
 
-export const addOrderToFirestore = async items => {
+export const addOrderToFirestore = async (items) => {
   const {
-    payload: { cartItems, currentUser, total }
+    payload: { cartItems, currentUser, total },
   } = items;
-  const actualDate = new Date();
   const createAt = firebase.firestore.Timestamp.fromDate(new Date());
-  const userRef = firestore.collection("users").doc(currentUser.id);
   const { id, displayName, email } = currentUser;
+  let orderId;
+
+  const batch = firestore.batch();
   const ordersRef = firestore.collection("orders");
+  const userRef = firestore.collection("users").doc(id);
 
   await ordersRef
     .add({
       items: cartItems,
       user: { id, displayName, email },
       celkem: total,
-      date: createAt
+      date: createAt,
     })
-    .then(docRef => {
-      const orderId = docRef.id;
-      userRef.update({
-        orders: firebase.firestore.FieldValue.arrayUnion({
-          orderId
-        })
-      });
+    .then((docRef) => {
+      orderId = docRef.id;
+      console.log("add order success");
     })
-    .catch(function(error) {
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  await userRef
+    .update({
+      orders: firebase.firestore.FieldValue.arrayUnion({
+        id: orderId,
+        items: cartItems,
+        celkem: total,
+        date: createAt,
+      }),
+    })
+    .then(() => {
+      console.log("add order user success");
+    })
+    .catch(function (error) {
       console.log(error);
     });
 };
@@ -64,7 +78,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         email,
         createAt,
         photoURL,
-        ...additionalData
+        ...additionalData,
       });
     } catch (error) {
       console.log("error creating user", error.message);
@@ -75,7 +89,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 export const addWines = ({
   image,
-  values: { color, druh, name, obsah, price, rocnik }
+  values: { color, druh, name, obsah, price, rocnik },
 }) => {
   const winesRef = firestore.collection("wines");
   try {
@@ -86,15 +100,36 @@ export const addWines = ({
       color,
       rocnik,
       druh,
-      image
+      image,
     });
   } catch (error) {
     console.log("error add wines", error.message);
   }
 };
 
-export const convertWinesSnapshotToMap = collections => {
-  const transformedCollection = collections.docs.map(doc => {
+export const updateWines = ({
+  id,
+  image,
+  values: { color, druh, name, obsah, price, rocnik },
+}) => {
+  const winesRef = firestore.collection("wines").doc(id);
+  try {
+    winesRef.update({
+      name,
+      price,
+      obsah,
+      color,
+      rocnik,
+      druh,
+      image,
+    });
+  } catch (error) {
+    console.log("error add wines", error.message);
+  }
+};
+
+export const convertWinesSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
     const { name, price, obsah, color, rocnik, druh, image } = doc.data();
 
     return {
@@ -106,14 +141,14 @@ export const convertWinesSnapshotToMap = collections => {
       rocnik,
       druh,
       image,
-      id: doc.id
+      id: doc.id,
     };
   });
   return transformedCollection;
 };
 
-export const convertCollectionAllOrdersToMap = collections => {
-  const transformedCollection = collections.docs.map(doc => {
+export const convertCollectionAllOrdersToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
     const { celkem, items, user, date } = doc.data();
 
     return {
@@ -121,7 +156,7 @@ export const convertCollectionAllOrdersToMap = collections => {
       id: doc.id,
       items,
       user,
-      date
+      date,
     };
   });
   return transformedCollection;
@@ -129,7 +164,7 @@ export const convertCollectionAllOrdersToMap = collections => {
 
 export const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
-    const unsubscribe = auth.onAuthStateChanged(userAuth => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
       unsubscribe();
       resolve(userAuth);
     }, reject);
@@ -142,7 +177,7 @@ export const storageRef = firebase.storage().ref();
 
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({
-  prompt: "select_account"
+  prompt: "select_account",
 });
 
 export default firebase;

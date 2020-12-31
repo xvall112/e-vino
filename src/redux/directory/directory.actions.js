@@ -41,3 +41,17 @@ export const addWinesFailure = ErrorMessage => ({
   type: directoryActionTypes.ADD_WINES_FAILURE,
   payload: ErrorMessage
 });
+
+export const updateWinesStart = updateWine => ({
+  type: directoryActionTypes.UPDATE_WINES_START,
+  payload: updateWine
+});
+
+export const updateWinesSuccess = () => ({
+  type: directoryActionTypes.UPDATE_WINES_SUCCESS
+});
+
+export const updateWinesFailure = ErrorMessage => ({
+  type: directoryActionTypes.UPDATE_WINES_FAILURE,
+  payload: ErrorMessage
+});

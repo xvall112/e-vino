@@ -31,7 +31,7 @@ const MainOffer = ({ wines, fetchWinesStart, currentUser }) => {
             return <Item item={item} key={item.id} />;
           })}
           {currentUser ? (
-            currentUser.id === "1Zh2hy3lMLfMdy8BVWCvRFum79t1" ? (
+            currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
               <Grid item xs={6} md={4} lg={3}>
                 <AddWines />
               </Grid>

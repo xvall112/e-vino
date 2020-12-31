@@ -19,7 +19,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-import { addWinesStart } from "../redux/directory/directory.actions";
+import { updateWinesStart } from "../redux/directory/directory.actions";
 
 const validationSchema = yup.object({
   name: yup.string("vyplňte název").required("vyplňte název"),
@@ -39,8 +39,10 @@ const validationSchema = yup.object({
   druh: yup.string("zadej druh").required("zadej druh")
 });
 
-const AddWines = ({ addWines }) => {
+const UpdateWines = ({ updateWines, item }) => {
   const [open, setOpen] = useState(false);
+
+  const { druh, color, rocnik, name, price, obsah, id } = item;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,24 +54,24 @@ const AddWines = ({ addWines }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      price: "",
-      obsah: "",
-      color: "",
-      rocnik: "",
-      druh: ""
+      name,
+      price,
+      obsah,
+      color,
+      rocnik,
+      druh
     },
     validationSchema: validationSchema,
     onSubmit: async values => {
-      addWines({ values });
+      updateWines({ values, id });
       formik.resetForm({});
     }
   });
   return (
     <Wrapper>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button onClick={handleClickOpen}>
         {" "}
-        <div className="addWine">Přidat</div>
+        <div className="addWine">Upravit</div>
       </Button>
       <Dialog
         fullWidth
@@ -179,8 +181,8 @@ const AddWines = ({ addWines }) => {
             <Button onClick={handleClose} color="primary">
               Zrušit
             </Button>
-            <Button onClick={handleClose} type="submit" color="primary">
-              Přidat
+            <Button type="submit" onClick={handleClose} color="primary">
+              Upravit
             </Button>
           </DialogActions>
         </form>
@@ -190,8 +192,8 @@ const AddWines = ({ addWines }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  addWines: ({ values }) => dispatch(addWinesStart({ values }))
+  updateWines: ({ values, id }) => dispatch(updateWinesStart({ values, id }))
 });
 
 const Wrapper = styled.div``;
-export default connect(null, mapDispatchToProps)(AddWines);
+export default connect(null, mapDispatchToProps)(UpdateWines);

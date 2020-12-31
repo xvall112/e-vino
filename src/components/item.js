@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DeleteWines from "./deleteWines";
+import UpdateWines from "./updateWines";
 
 import { connect } from "react-redux";
 import { addItem } from "../redux/cart/cart.action";
@@ -54,12 +55,10 @@ const Item = ({ item, addItem, currentUser }) => {
           </Grid>
         </Grid>
         {currentUser ? (
-          currentUser.id === "1Zh2hy3lMLfMdy8BVWCvRFum79t1" ? (
+          currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
             <Grid container direction="row" justify="center">
               {" "}
-              <Button size="small" variant="outlined">
-                upravit
-              </Button>{" "}
+              <UpdateWines item={item} />
               <DeleteWines name={name} id={id} />
             </Grid>
           ) : null

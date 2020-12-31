@@ -4,6 +4,7 @@ import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store /* persistor */ } from "./redux/store";
+import { StylesProvider } from "@material-ui/core/styles";
 
 /* import { PersistGate } from "redux-persist/integration/react"; */
 
@@ -11,9 +12,9 @@ import CartProvider from "./providers/cart/cart.provider";
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      {/* <PersistGate persistor={persistor}> */}
-      <App />
-      {/*  </PersistGate> */}
+      <StylesProvider injectFirst>
+        <App />
+      </StylesProvider>
     </Router>
   </Provider>,
   document.getElementById("root")

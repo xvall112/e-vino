@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -10,7 +10,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
-import { auth } from "../firebase/firebase.utils";
+import Box from "@material-ui/core/Box";
+import PersonIcon from "@material-ui/icons/Person";
 
 import { signOutStart } from "../redux/user/user.actions";
 
@@ -20,7 +21,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   /* const currentUser = useContext(CurrentUserContext); */
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -31,11 +32,15 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
   return (
     <Wrapper>
       <Button onClick={handleClick}>
-        <Avatar
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          src={currentUser ? currentUser.photoURL : "/broken-image.jpg"}
-        />
+        {currentUser ? (
+          <Avatar
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            src={currentUser.photoURL}
+          />
+        ) : (
+          <PersonIcon />
+        )}
       </Button>
       {currentUser ? (
         <Menu
@@ -48,26 +53,32 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
         >
           <MenuItem>
             <div className="items">
-              <Grid
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
-              >
-                <Avatar src={currentUser.photoURL} />
-                <div className="profile-item_name">
-                  {currentUser.displayName}
-                </div>
-                <div className="profile-item_email">{currentUser.email}</div>
-              </Grid>
+              <Box border={1} p={2} mx={5} borderRadius={16}>
+                <Grid
+                  container
+                  direction="column"
+                  justify="center"
+                  alignItems="center"
+                >
+                  <AvatarStyled src={currentUser.photoURL} />
+                  <Box fontWeight={900}>{currentUser.displayName}</Box>
+                  <Box fontSize={16} fontWeight="fontWeightLight">
+                    {currentUser.email}
+                  </Box>
+                </Grid>
+              </Box>
             </div>
           </MenuItem>
-          <MenuItem>Moje Objednávky</MenuItem>
-          {currentUser.roles === "admin" && (
-            <Link to="/admin">
-              <MenuItem>Admin</MenuItem>
-            </Link>
-          )}
+          <Link to="/user">
+            <MenuItems>Moje Objednávky</MenuItems>
+          </Link>
+          {currentUser ? (
+            currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
+              <Link to="/admin">
+                <MenuItems>Admin</MenuItems>
+              </Link>
+            ) : null
+          ) : null}
 
           <MenuItem>
             <Button
@@ -109,18 +120,22 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   signOutStart: () => {
     dispatch(signOutStart());
-  }
+  },
 });
 
-const Wrapper = styled.div`
-  .items {
-    background-color: green;
-  }
+const Wrapper = styled.div``;
+const MenuItems = styled(MenuItem)`
+  font-size: 16px;
+`;
+const AvatarStyled = styled(Avatar)`
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
 `;
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileIcon);

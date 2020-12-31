@@ -10,6 +10,9 @@ import Navigation from "./components/navigation";
 import CheckoutPage from "./pages/checkout";
 import SignUp from "./pages/SignUp";
 import AdminPage from "./pages/admin";
+import UserPage from "./pages/user";
+
+import Box from "@material-ui/core/Box";
 
 import { selectCurrentUser } from "./redux/user/user.selector";
 import { connect } from "react-redux";
@@ -36,42 +39,46 @@ const App = ({ currentUser, checkUserSession }) => {
       <GoogleFont typography={typography} />
 
       <Navigation />
-
-      <Switch>
-        <Route path="/" exact>
-          <HomePage />
-        </Route>
-        <Route path="/checkout" exact>
-          <CheckoutPage />
-        </Route>
-        <Route path="/signIn" exact>
-          {currentUser ? <Redirect to="/" /> : <SignIn />}
-        </Route>
-        <Route path="/signUp" exact>
-          {currentUser ? <Redirect to="/" /> : <SignUp />}
-        </Route>
-        <Route path="/admin" exact>
-          {currentUser ? (
-            currentUser.id === "1Zh2hy3lMLfMdy8BVWCvRFum79t1" ? (
-              <AdminPage />
+      <Box pt={7}>
+        <Switch>
+          <Route path="/" exact>
+            <HomePage />
+          </Route>
+          <Route path="/checkout" exact>
+            <CheckoutPage />
+          </Route>
+          <Route path="/signIn" exact>
+            {currentUser ? <Redirect to="/" /> : <SignIn />}
+          </Route>
+          <Route path="/signUp" exact>
+            {currentUser ? <Redirect to="/" /> : <SignUp />}
+          </Route>
+          <Route path="/user" exact>
+            {currentUser ? <UserPage /> : <Redirect to="/" />}
+          </Route>
+          <Route path="/admin" exact>
+            {currentUser ? (
+              currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
+                <AdminPage />
+              ) : (
+                <Redirect to="/" />
+              )
             ) : (
               <Redirect to="/" />
-            )
-          ) : (
-            <Redirect to="/" />
-          )}
-        </Route>
-      </Switch>
+            )}
+          </Route>
+        </Switch>
+      </Box>
     </>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  checkUserSession: () => dispatch(checkUserSession())
+const mapDispatchToProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
