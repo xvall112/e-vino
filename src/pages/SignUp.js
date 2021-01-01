@@ -30,7 +30,7 @@ const validationSchema = yup.object({
     .string()
     .required("Hesla nesouhlasí")
     .oneOf([yup.ref("password"), null], "Hesla nesouhlasí"),
-  name: yup.string("Vložte jméno").required("Jméno není vyplňeno")
+  name: yup.string("Vložte jméno").required("Jméno není vyplňeno"),
 });
 
 const SignUp = ({ singUpStart, loading }) => {
@@ -39,15 +39,15 @@ const SignUp = ({ singUpStart, loading }) => {
       email: "",
       password: "",
       name: "",
-      passwordConfirmation: ""
+      passwordConfirmation: "",
     },
     validationSchema: validationSchema,
-    onSubmit: values => {
-      const displayName = JSON.stringify(values.name, null, 2);
+    onSubmit: (values) => {
+      const displayName = values.name;
       const { email, password } = values;
       singUpStart({ email, password, displayName });
       formik.resetForm({});
-    }
+    },
   });
 
   return (
@@ -168,11 +168,11 @@ const SignUp = ({ singUpStart, loading }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: selectLoad
+  loading: selectLoad,
 });
 
-const mapDispatchToProps = dispatch => ({
-  singUpStart: userCredential => dispatch(signUpStart(userCredential))
+const mapDispatchToProps = (dispatch) => ({
+  singUpStart: (userCredential) => dispatch(signUpStart(userCredential)),
 });
 
 const Wrapper = styled.section`
