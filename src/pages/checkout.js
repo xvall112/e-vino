@@ -12,7 +12,6 @@ import StripeCheckoutButton from "../components/stripeButton";
 const Checkout = ({ total, cartItems }) => {
   return (
     <div>
-      <h2>Košík</h2>
       <CheckoutItems />
     </div>
   );
@@ -20,6 +19,6 @@ const Checkout = ({ total, cartItems }) => {
 
 const mapStateToProps = createStructuredSelector({
   total: selectCartTotal,
-  cartItems: selectCartItems
+  cartItems: selectCartItems,
 });
 export default connect(mapStateToProps)(Checkout);

@@ -11,23 +11,27 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Card from "@material-ui/core/Card";
+import lightBlue from "@material-ui/core/colors/lightBlue";
 
 const useRowStyles = makeStyles({
   root: {
     "& > *": {
-      borderBottom: "unset"
-    }
-  }
+      borderBottom: "unset",
+    },
+  },
 });
 
 const AllOrdersTableRow = ({ order }) => {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
-  console.log(order);
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -41,14 +45,14 @@ const AllOrdersTableRow = ({ order }) => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-        {order.user.displayName}
+          {order.user.displayName}
         </TableCell>
         <TableCell component="th" scope="row">
-          {order.date.toDate().toDateString()}
+          {order.date.toDate().toLocaleDateString("cs-CZ", options)}
         </TableCell>
         <TableCell>{order.celkem}</TableCell>
       </TableRow>
-      <TableRow>
+      <TableRow bgcolor={lightBlue[50]}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
@@ -64,7 +68,7 @@ const AllOrdersTableRow = ({ order }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {order.items.map(item => {
+                  {order.items.map((item) => {
                     return (
                       <TableRow key={item.id}>
                         <TableCell>{item.id}</TableCell>

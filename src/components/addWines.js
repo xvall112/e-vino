@@ -36,7 +36,7 @@ const validationSchema = yup.object({
     .number("zadej ročník")
     .max(2021, "ročník musí být méně než aktuální rok")
     .required("zadej ročník"),
-  druh: yup.string("zadej druh").required("zadej druh")
+  druh: yup.string("zadej druh").required("zadej druh"),
 });
 
 const AddWines = ({ addWines }) => {
@@ -57,13 +57,13 @@ const AddWines = ({ addWines }) => {
       obsah: "",
       color: "",
       rocnik: "",
-      druh: ""
+      druh: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       addWines({ values });
       formik.resetForm({});
-    }
+    },
   });
   return (
     <Wrapper>
@@ -172,6 +172,7 @@ const AddWines = ({ addWines }) => {
                 <MenuItem value={"suché"}>Suché</MenuItem>
                 <MenuItem value={"sladké"}>Sladké</MenuItem>
                 <MenuItem value={"polosuché"}>Polosuché</MenuItem>
+                <MenuItem value={"polosladké"}>Polosladké</MenuItem>
               </Select>
             </FormControl>
           </DialogContent>
@@ -189,8 +190,8 @@ const AddWines = ({ addWines }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  addWines: ({ values }) => dispatch(addWinesStart({ values }))
+const mapDispatchToProps = (dispatch) => ({
+  addWines: ({ values }) => dispatch(addWinesStart({ values })),
 });
 
 const Wrapper = styled.div``;

@@ -12,6 +12,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import grey from "@material-ui/core/colors/grey";
+import Typography from "@material-ui/core/Typography";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -26,29 +28,43 @@ const usersOrders = ({
 }) => {
   useEffect(() => {
     fetchCurrentUserOrders(currentUser.id);
-    console.log(currentUserOrders);
   }, []);
 
   return (
     <div>
       <Container>
-        <TableContainer component={Paper}>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell>Id objednavky</TableCell>
-                <TableCell>Datum</TableCell>
-                <TableCell>Celkem</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {currentUserOrders.map((order, index) => (
-                <AllCurrentUserOrdersTableRow key={index} order={order} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box mt={2}>
+          <TableContainer component={Paper}>
+            {currentUserOrders ? (
+              <Table aria-label="collapsible table">
+                <TableHead bgcolor={grey[200]}>
+                  <TableRow>
+                    <TableCell />
+                    <TableCell>Id objednavky</TableCell>
+                    <TableCell>Datum</TableCell>
+                    <TableCell>Celkem</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {currentUserOrders.map((order, index) => (
+                    <AllCurrentUserOrdersTableRow key={index} order={order} />
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+              >
+                <Box py={3} fontWeight="fontWeightBold">
+                  Nemáte žádné objednávky
+                </Box>
+              </Grid>
+            )}
+          </TableContainer>
+        </Box>
       </Container>
     </div>
   );

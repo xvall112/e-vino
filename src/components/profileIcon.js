@@ -12,6 +12,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import PersonIcon from "@material-ui/icons/Person";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 
 import { signOutStart } from "../redux/user/user.actions";
 
@@ -70,12 +74,22 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
             </div>
           </MenuItem>
           <Link to="/user">
-            <MenuItems>Moje Objednávky</MenuItems>
+            <MenuItemStyled>
+              <ListItemIcon>
+                <ShoppingBasketIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemTextStyled primary="Moje objednávky" />
+            </MenuItemStyled>
           </Link>
           {currentUser ? (
             currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
               <Link to="/admin">
-                <MenuItems>Admin</MenuItems>
+                <MenuItemStyled>
+                  <ListItemIcon>
+                    <SupervisorAccountIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemTextStyled primary="Admin" />
+                </MenuItemStyled>
               </Link>
             ) : null
           ) : null}
@@ -130,7 +144,10 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const Wrapper = styled.div``;
-const MenuItems = styled(MenuItem)`
+const MenuItemStyled = styled(MenuItem)`
+  font-size: 16px;
+`;
+const ListItemTextStyled = styled(ListItemText)`
   font-size: 16px;
 `;
 const AvatarStyled = styled(Avatar)`

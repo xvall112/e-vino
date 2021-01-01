@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Item from "./item";
+import Filtering from "./filtering";
+
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
@@ -26,8 +28,9 @@ const MainOffer = ({ wines, fetchWinesStart, currentUser }) => {
   return (
     <Wrapper>
       <Container>
+        <Filtering />
         <Grid container justify="center" alignItems="center" spacing={2}>
-          {wines.map(item => {
+          {wines.map((item) => {
             return <Item item={item} key={item.id} />;
           })}
           {currentUser ? (
@@ -44,7 +47,6 @@ const MainOffer = ({ wines, fetchWinesStart, currentUser }) => {
 };
 
 const Wrapper = styled.section`
-  text-align: center;
   .addWine {
     height: 100%;
     width: 100%;
@@ -53,11 +55,11 @@ const Wrapper = styled.section`
 
 const mapStateToProps = createStructuredSelector({
   wines: selectDirectoryWine,
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchWinesStart: () => dispatch(fetchWinesStart())
+const mapDispatchToProps = (dispatch) => ({
+  fetchWinesStart: () => dispatch(fetchWinesStart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainOffer);

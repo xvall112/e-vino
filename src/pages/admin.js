@@ -1,12 +1,12 @@
 import React from "react";
-
-import AllOrders from "../components/allOrders";
+import AdminHeader from "../components/admin/adminHeader";
+import AdminTabPane from "../components/admin/adminTabPane";
 
 const Admin = () => {
   return (
     <div>
-      <h1>amin page</h1>
-      <AllOrders />
+      <AdminHeader />
+      <AdminTabPane />
     </div>
   );
 };
