@@ -3,21 +3,19 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { createStructuredSelector } from "reselect";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+
 import DialogTitle from "@material-ui/core/DialogTitle";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
+
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 import { addWinesStart } from "../redux/directory/directory.actions";
 
@@ -66,11 +64,10 @@ const AddWines = ({ addWines }) => {
     },
   });
   return (
-    <Wrapper>
-      <Button variant="contained" onClick={handleClickOpen}>
-        {" "}
-        <div className="addWine">Přidat</div>
-      </Button>
+    <>
+      <StyledButton variant="contained" onClick={handleClickOpen}>
+        Přidat
+      </StyledButton>
       <Dialog
         fullWidth
         open={open}
@@ -186,7 +183,7 @@ const AddWines = ({ addWines }) => {
           </DialogActions>
         </form>
       </Dialog>
-    </Wrapper>
+    </>
   );
 };
 
@@ -194,5 +191,8 @@ const mapDispatchToProps = (dispatch) => ({
   addWines: ({ values }) => dispatch(addWinesStart({ values })),
 });
 
-const Wrapper = styled.div``;
+const StyledButton = styled(Button)`
+  height: 200px;
+  width: 150px;
+`;
 export default connect(null, mapDispatchToProps)(AddWines);

@@ -4,7 +4,6 @@ import Item from "./item";
 import Filtering from "./filtering";
 
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 
 import AddWines from "./addWines";
 
@@ -29,7 +28,7 @@ const MainOffer = ({ wines, fetchWinesStart, currentUser }) => {
     <Wrapper>
       <Container>
         <Filtering />
-        <Grid container justify="center" alignItems="center" spacing={2}>
+        <Grid container alignItems="center" spacing={2}>
           {wines.map((item) => {
             return <Item item={item} key={item.id} />;
           })}

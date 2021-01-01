@@ -7,6 +7,7 @@ import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -45,7 +46,7 @@ const Filterinng = ({
   };
 
   return (
-    <div>
+    <Box my={2}>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">barva</InputLabel>
         <Select
@@ -78,7 +79,7 @@ const Filterinng = ({
           <MenuItem value={"polosladké"}>Polosladké</MenuItem>
         </Select>
       </FormControl>
-    </div>
+    </Box>
   );
 };
 const mapStateToProps = createStructuredSelector({
