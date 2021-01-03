@@ -1,16 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import {
-  clearItemFromCart,
-  removeItem,
-  addItem,
-  addOrderStart
-} from "../redux/cart/cart.action";
-import { selectCartItems, selectCartTotal } from "../redux/cart/cart.selectors";
-import { selectCurrentUser } from "../redux/user/user.selector";
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -21,6 +12,18 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
+import Box from "@material-ui/core/Box";
+
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import {
+  clearItemFromCart,
+  removeItem,
+  addItem,
+  addOrderStart,
+} from "../redux/cart/cart.action";
+import { selectCartItems, selectCartTotal } from "../redux/cart/cart.selectors";
+import { selectCurrentUser } from "../redux/user/user.selector";
 
 const CheckoutItems = ({
   cartItems,
@@ -30,7 +33,7 @@ const CheckoutItems = ({
   addItem,
   itemTotal,
   addOrder,
-  currentUser
+  currentUser,
 }) => {
   return (
     <Wrapper>
@@ -54,7 +57,7 @@ const CheckoutItems = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems.map(item => (
+                  {cartItems.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell align="center">
                         <img src={item.image} />
@@ -95,25 +98,45 @@ const CheckoutItems = ({
               direction="column"
             >
               <h5>Košík je prázdný</h5>
-              <Link to="/">
-                <Button variant="outlined" color="primary">
-                  pokračovat v nákupu
-                </Button>
-              </Link>
             </Grid>
           )}
           <Grid
             container
-            direction="row"
-            justify="space-around"
+            direction="column"
+            justify="center"
             alignItems="center"
           >
-            <Grid item>
-              <span className="total">CELKEM: {total} Kč</span>
-            </Grid>
-            <Grid item>
-              <Grid container direction="column" alignItems="center">
+            {!currentUser && (
+              <Box my={2}>
+                <Alert severity="info">
+                  pro objednání musíte <Link to="signIn">přihlásit se </Link>
+                  nebo <Link to="signUp">registrovat se</Link>
+                </Alert>
+              </Box>
+            )}
+            <Box mb={2}>
+              <Grid item>
+                <span className="total">CELKEM: {total} Kč</span>
+              </Grid>
+            </Box>
+
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justify="space-around"
+              spacing={2}
+            >
+              <Grid item xs={12} md={3}>
+                <Link to="/">
+                  <Button fullWidth variant="outlined" color="primary">
+                    pokračovat v nákupu
+                  </Button>
+                </Link>
+              </Grid>
+              <Grid item xs={12} md={3}>
                 <Button
+                  fullWidth
                   variant="contained"
                   color="primary"
                   onClick={() => addOrder({ cartItems, currentUser, total })}
@@ -123,12 +146,6 @@ const CheckoutItems = ({
                 >
                   Objednat
                 </Button>
-                {!currentUser && (
-                  <Alert severity="info">
-                    pro objednání musíte <Link to="signIn">přihlásit se </Link>
-                    nebo <Link to="signUp">registrovat se</Link>
-                  </Alert>
-                )}
               </Grid>
             </Grid>
           </Grid>
@@ -137,16 +154,16 @@ const CheckoutItems = ({
     </Wrapper>
   );
 };
-const mapDispatchToProps = dispatch => ({
-  clearItem: item => dispatch(clearItemFromCart(item)),
-  removeItem: item => dispatch(removeItem(item)),
-  addItem: item => dispatch(addItem(item)),
-  addOrder: order => dispatch(addOrderStart(order))
+const mapDispatchToProps = (dispatch) => ({
+  clearItem: (item) => dispatch(clearItemFromCart(item)),
+  removeItem: (item) => dispatch(removeItem(item)),
+  addItem: (item) => dispatch(addItem(item)),
+  addOrder: (order) => dispatch(addOrderStart(order)),
 });
 const mapStateToProps = createStructuredSelector({
   cartItems: selectCartItems,
   total: selectCartTotal,
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
 const Wrapper = styled.div`
@@ -155,7 +172,7 @@ const Wrapper = styled.div`
 
   a {
     color: blue;
-    text-decoration: underline;
+    text-decoration: none;
   }
   .button {
     span {

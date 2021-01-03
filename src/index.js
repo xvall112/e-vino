@@ -4,17 +4,19 @@ import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store /* persistor */ } from "./redux/store";
-import { StylesProvider } from "@material-ui/core/styles";
 
+import { ThemeProvider, StylesProvider } from "@material-ui/core/styles";
+import { theme } from "./utils/theme";
 /* import { PersistGate } from "redux-persist/integration/react"; */
 
-import CartProvider from "./providers/cart/cart.provider";
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <StylesProvider injectFirst>
-        <App />
-      </StylesProvider>
+      <ThemeProvider theme={theme}>
+        <StylesProvider injectFirst>
+          <App />
+        </StylesProvider>
+      </ThemeProvider>
     </Router>
   </Provider>,
   document.getElementById("root")

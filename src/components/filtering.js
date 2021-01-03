@@ -8,12 +8,16 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
+import IconButton from "@material-ui/core/IconButton";
+import ReplayIcon from "@material-ui/icons/Replay";
+import Grid from "@material-ui/core/Grid";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import {
   setFilteringWinesColor,
   setFilteringWinesDruh,
+  clearFilteringWines,
 } from "../redux/directory/directory.actions";
 import {
   selectColorWine,
@@ -35,6 +39,7 @@ const Filterinng = ({
   setFilteringWinesDruh,
   winesDruhFiltering,
   winesColorFiltering,
+  clearFilteringWines,
 }) => {
   const classes = useStyles();
 
@@ -46,7 +51,7 @@ const Filterinng = ({
   };
 
   return (
-    <Box my={2}>
+    <Box my={2} display="flex" alignItems="center">
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">barva</InputLabel>
         <Select
@@ -62,7 +67,6 @@ const Filterinng = ({
           <MenuItem value={"růžové"}>Růžové</MenuItem>
         </Select>
       </FormControl>
-
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">druh</InputLabel>
         <Select
@@ -79,6 +83,9 @@ const Filterinng = ({
           <MenuItem value={"polosladké"}>Polosladké</MenuItem>
         </Select>
       </FormControl>
+      <IconButton onClick={() => clearFilteringWines()}>
+        <ReplayIcon />
+      </IconButton>
     </Box>
   );
 };
@@ -90,6 +97,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   setFilteringWinesColor: (color) => dispatch(setFilteringWinesColor(color)),
   setFilteringWinesDruh: (druh) => dispatch(setFilteringWinesDruh(druh)),
+  clearFilteringWines: () => dispatch(clearFilteringWines()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filterinng);

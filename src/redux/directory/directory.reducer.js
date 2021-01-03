@@ -40,6 +40,12 @@ const directoryReducer = (state = INITIAL_STATE, action) => {
         ...state,
         druhWines: action.payload,
       };
+    case directoryActionTypes.CLEAR_FILTERING_WINES:
+      return {
+        ...state,
+        druhWines: "",
+        colorWines: "",
+      };
     default:
       return state;
   }

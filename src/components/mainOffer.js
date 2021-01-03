@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import Item from "./item";
 import Filtering from "./filtering";
-
-import Grid from "@material-ui/core/Grid";
-
 import AddWines from "./addWines";
+
+import { Grid } from "@material-ui/core";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -28,10 +28,12 @@ const MainOffer = ({ wines, fetchWinesStart, currentUser }) => {
     <Wrapper>
       <Container>
         <Filtering />
+
         <Grid container alignItems="center" spacing={2}>
           {wines.map((item) => {
             return <Item item={item} key={item.id} />;
           })}
+
           {currentUser ? (
             currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
               <Grid item xs={6} md={4} lg={3}>

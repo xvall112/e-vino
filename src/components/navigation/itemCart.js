@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import styled from "styled-components";
+import Box from "@material-ui/core/Box";
 
 const ItemCart = ({ item }) => {
   const { image, name, quantity, price } = item;
@@ -11,9 +12,9 @@ const ItemCart = ({ item }) => {
           <img src={image} />
         </Grid>
         <Grid item>
-          <div className="cartItem-price">
-            <h6>{name}</h6> {quantity} x {price}
-          </div>
+          <Box pl={2} display="flex" flexDirection="column">
+            <Box fontWeight={900}>{name}</Box> {quantity} x {price}
+          </Box>
         </Grid>
       </Grid>
     </Wrapper>
@@ -23,14 +24,8 @@ const ItemCart = ({ item }) => {
 const Wrapper = styled.div`
   margin-bottom: 10px;
   img {
-    margin-top: 10px;
-    width: 20px;
-  }
-  h6 {
+    width: 25px;
     margin: 0px;
-  }
-  .cartItem_price {
-    padding-left: 10px;
   }
 `;
 export default ItemCart;

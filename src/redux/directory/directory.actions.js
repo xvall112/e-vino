@@ -65,3 +65,7 @@ export const setFilteringWinesDruh = (winesDruh) => ({
   type: directoryActionTypes.SET_FILTERING_WINES_DRUH,
   payload: winesDruh,
 });
+
+export const clearFilteringWines = () => ({
+  type: directoryActionTypes.CLEAR_FILTERING_WINES,
+});

@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 
-import UserOrders from "./usersOrders";
+import UserOrders from "./userOrders";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,7 +46,9 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+  },
+  background: {
+    background: theme.palette.backgroundUser,
   },
 }));
 

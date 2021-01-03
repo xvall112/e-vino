@@ -7,8 +7,7 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-
-import AllOrders from "./allOrders";
+import Orders from "./orders";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,7 +45,10 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+  },
+  sticky: {
+    position: "sticky",
+    top: "55px",
   },
 }));
 
@@ -60,7 +62,7 @@ export default function AdminTabPane() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar className={classes.sticky}>
         <Container>
           <Tabs
             value={value}
@@ -73,8 +75,7 @@ export default function AdminTabPane() {
           </Tabs>
         </Container>
       </AppBar>
-
-      <AllOrders />
+      <Orders />
     </div>
   );
 }
