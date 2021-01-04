@@ -47,8 +47,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  background: {
-    background: theme.palette.backgroundUser,
+  sticky: {
+    position: "sticky",
+    top: "55px",
   },
 }));
 
@@ -62,7 +63,7 @@ export default function SimpleTabs() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar className={classes.sticky}>
         <Container>
           <Tabs
             value={value}

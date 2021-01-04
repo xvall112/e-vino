@@ -1,13 +1,14 @@
 import { createSelector } from "reselect";
 
-const selectOrders = (state) => state.orders;
+const selectOrders = (state) => state.orders.orders;
+const selectCurrentUserOrder = (state) => state.orders.currentUserOrders;
 
 export const selectAllOrders = createSelector(
   [selectOrders],
-  (orders) => orders.orders
+  (selectOrders) => selectOrders
 );
 
 export const selectCurrentUserOrders = createSelector(
-  [selectOrders],
-  (orders) => orders.currentUserOrders
+  [selectCurrentUserOrder],
+  (currentUserOrders) => currentUserOrders
 );

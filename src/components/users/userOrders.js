@@ -8,12 +8,14 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { fetchCurrentUserOrdersStart } from "../../redux/orders/orders.action";
 import { selectCurrentUser } from "../../redux/user/user.selector";
 import { selectCurrentUserOrders } from "../../redux/orders/orders.selector";
+import { selectLoad } from "../../redux/loading/loading.selector";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +32,7 @@ const UserOrders = ({
   fetchCurrentUserOrders,
   currentUser,
   currentUserOrders,
+  loading,
 }) => {
   useEffect(() => {
     fetchCurrentUserOrders(currentUser.id);
@@ -45,52 +48,60 @@ const UserOrders = ({
   return (
     <div className={classes.root}>
       <Container>
-        {currentUserOrders.map((order, index) => (
-          <Accordion key={index}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Grid container direction="row" alignItems="center">
-                <Grid item xs={12} md={4} className={classes.text}>
-                  {order.id}
-                </Grid>
-                <Grid item xs={12} md={3} className={classes.text}>
-                  {order.date.toDate().toLocaleDateString("cs-CZ", options)}
-                </Grid>
-                <Grid item xs={12} md={1} className={classes.heading}>
-                  {order.celkem} Kč
-                </Grid>
-              </Grid>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid container direction="column">
-                <hr />
-                <Grid container direction="row" className={classes.heading}>
-                  <Grid item xs={6} md={4}>
-                    Objednávka
+        {loading ? (
+          <>
+            <Skeleton variant="text" width="100%" height={100} />
+            <Skeleton variant="text" width="100%" height={100} />
+            <Skeleton variant="text" width="100%" height={100} />
+          </>
+        ) : (
+          currentUserOrders.map((order, index) => (
+            <Accordion key={index}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Grid container direction="row" alignItems="center">
+                  <Grid item xs={12} md={4} className={classes.text}>
+                    {order.id}
                   </Grid>
-                  <Grid item xs={2}>
-                    ks
+                  <Grid item xs={12} md={3} className={classes.text}>
+                    {order.date.toDate().toLocaleDateString("cs-CZ", options)}
+                  </Grid>
+                  <Grid item xs={12} md={1} className={classes.heading}>
+                    {order.celkem} Kč
                   </Grid>
                 </Grid>
-                {order.items.map((item) => {
-                  return (
-                    <Grid container direction="row" key={item.id}>
-                      <Grid item xs={6} md={4}>
-                        {item.name}
-                      </Grid>
-                      <Grid item xs={2}>
-                        {item.quantity} ks
-                      </Grid>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container direction="column">
+                  <hr />
+                  <Grid container direction="row" className={classes.heading}>
+                    <Grid item xs={6} md={4}>
+                      Objednávka
                     </Grid>
-                  );
-                })}
-              </Grid>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+                    <Grid item xs={2}>
+                      ks
+                    </Grid>
+                  </Grid>
+                  {order.items.map((item) => {
+                    return (
+                      <Grid container direction="row" key={item.id}>
+                        <Grid item xs={6} md={4}>
+                          {item.name}
+                        </Grid>
+                        <Grid item xs={2}>
+                          {item.quantity} ks
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+          ))
+        )}
       </Container>
     </div>
   );
@@ -99,6 +110,7 @@ const UserOrders = ({
 const mapStateToProps = createStructuredSelector({
   currentUserOrders: selectCurrentUserOrders,
   currentUser: selectCurrentUser,
+  loading: selectLoad,
 });
 
 const mapDispatchToProps = (dispatch) => ({

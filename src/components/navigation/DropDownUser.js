@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
   hr: {
     marginBottom: "0px",
   },
+  link: {
+    width: "100%",
+    height: "100%",
+  },
 }));
 const DropDownUser = ({ handleClose, currentUser, signOutStart }) => {
   const classes = useStyles();
@@ -28,7 +32,7 @@ const DropDownUser = ({ handleClose, currentUser, signOutStart }) => {
     <Box mt={2}>
       <hr className={classes.hr} />
       <MenuItem disabled={currentUser ? false : true}>
-        <Link to="/user" onClick={handleClose}>
+        <Link to="/user" onClick={handleClose} className={classes.link}>
           <Box display="flex" flexDirection="row">
             <ListItemIcon>
               <ShoppingBasketIcon fontSize="small" />

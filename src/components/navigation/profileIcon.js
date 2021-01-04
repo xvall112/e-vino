@@ -82,7 +82,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <Box my={2}>
+          <Box my={1}>
             <MenuItem>
               <BoxStyled p={2} px={5} borderRadius={16} width={1}>
                 <Grid
@@ -101,7 +101,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
                 </Grid>
               </BoxStyled>
             </MenuItem>
-            <Link to="/user">
+            <Link to="/user" onClick={handleClose}>
               <MenuItemStyled>
                 <ListItemIcon>
                   <ShoppingBasketIcon fontSize="small" />
@@ -113,7 +113,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
             </Link>
             {currentUser ? (
               currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
-                <Link to="/admin">
+                <Link to="/admin" onClick={handleClose}>
                   <MenuItemStyled>
                     <ListItemIcon>
                       <SupervisorAccountIcon fontSize="small" />

@@ -1,4 +1,5 @@
 import { ordersActionTypes } from "./orders.type";
+import { sortDesc } from "./orders.utils";
 
 const initialState = {
   currentUserOrders: [],
@@ -8,12 +9,10 @@ const initialState = {
 
 const ordersReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ordersActionTypes.FETCH_ORDERS_START:
-      return { ...state, isFetching: true };
     case ordersActionTypes.FETCH_ORDERS_SUCCESS:
       return {
         ...state,
-        orders: action.payload,
+        orders: sortDesc(action.payload, "date"),
       };
     case ordersActionTypes.FETCH_CURRENT_USER_ORDERS_SUCCESS:
       return {
@@ -25,6 +24,11 @@ const ordersReducer = (state = initialState, action) => {
       return {
         ...state,
         errorMessage: action.payload,
+      };
+    case ordersActionTypes.SORT_ALL_ORDERS_BY_SELECT:
+      return {
+        ...state,
+        orders: sortDesc(state.orders),
       };
     default:
       return state;
