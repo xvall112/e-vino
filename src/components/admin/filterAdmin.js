@@ -10,14 +10,13 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import { sortAllOrdersBySelect } from "../../redux/orders/orders.action";
-
+import { createStructuredSelector } from "reselect";
+import { sortOrdersBySelect } from "../../redux/orders/orders.selector";
 import { connect } from "react-redux";
 
-const FilterAdmin = ({ sortBySelect }) => {
-  const [razeni, setRazeni] = useState("");
+const FilterAdmin = ({ sortBySelect, sortOrdersBySelect }) => {
   const classes = useStyles();
   const setFilter = (event) => {
-    setRazeni(event.target.value);
     sortBySelect(event.target.value);
   };
   return (
@@ -52,11 +51,10 @@ const FilterAdmin = ({ sortBySelect }) => {
             <Select
               labelId="demo-simple-select-outlined-label"
               id="demo-simple-select-outlined"
-              value={razeni}
+              value={sortOrdersBySelect}
               onChange={setFilter}
               label="řadit podle"
             >
-              <MenuItem value={""}>""</MenuItem>
               <MenuItem value={"name"}>Jména</MenuItem>
               <MenuItem value={"date"}>Data</MenuItem>
               <MenuItem value={"celkem"}>Celkem</MenuItem>
@@ -141,8 +139,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const mapStateToProps = createStructuredSelector({
+  sortOrdersBySelect: sortOrdersBySelect,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   sortBySelect: (select) => dispatch(sortAllOrdersBySelect(select)),
 });
 
-export default connect(null, mapDispatchToProps)(FilterAdmin);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterAdmin);

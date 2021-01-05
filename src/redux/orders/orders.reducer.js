@@ -5,6 +5,7 @@ const initialState = {
   currentUserOrders: [],
   orders: [],
   errorMessage: undefined,
+  select: "date",
 };
 
 const ordersReducer = (state = initialState, action) => {
@@ -17,7 +18,7 @@ const ordersReducer = (state = initialState, action) => {
     case ordersActionTypes.FETCH_CURRENT_USER_ORDERS_SUCCESS:
       return {
         ...state,
-        currentUserOrders: action.payload,
+        currentUserOrders: sortDesc(action.payload, "date"),
       };
     case ordersActionTypes.FETCH_CURRENT_USER_ORDERS_FAILURE:
     case ordersActionTypes.FETCH_ORDERS_FAILURE:
@@ -28,7 +29,7 @@ const ordersReducer = (state = initialState, action) => {
     case ordersActionTypes.SORT_ALL_ORDERS_BY_SELECT:
       return {
         ...state,
-        orders: sortDesc(state.orders),
+        select: action.payload,
       };
     default:
       return state;

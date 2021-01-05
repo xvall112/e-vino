@@ -6,6 +6,7 @@ import Filtering from "./filtering";
 import AddWines from "./addWines";
 
 import { Grid } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -13,13 +14,7 @@ import { selectDirectoryWine } from "../redux/directory/directory.selector";
 import { selectCurrentUser } from "../redux/user/user.selector";
 import { fetchWinesStart } from "../redux/directory/directory.actions";
 
-/* import CollectionsContext from "../contexts/collections/collections.context"; */
-
-import Container from "@material-ui/core/Container";
-
 const MainOffer = ({ wines, fetchWinesStart, currentUser }) => {
-  /* const collections = useContext(CollectionsContext); */
-
   useEffect(() => {
     fetchWinesStart();
   }, []);

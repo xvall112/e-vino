@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
+
+import OrdersItem from "./ordersItem";
+
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Filtering from "./filterAdmin";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { selectAllOrders } from "../../redux/orders/orders.selector";
+import {
+  selectAllOrders,
+  sortOrdersBySelect,
+} from "../../redux/orders/orders.selector";
 import { fetchOrdersStart } from "../../redux/orders/orders.action";
 import { selectLoad } from "../../redux/loading/loading.selector";
 
@@ -22,10 +22,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginTop: "30px",
   },
-  heading: {
-    fontWeight: theme.typography.fontWeightBold,
-  },
-  text: { fontWeight: theme.typography.fontWeightLight },
 }));
 
 const Orders = ({ fetchOrders, allOrders, loading }) => {
@@ -34,12 +30,7 @@ const Orders = ({ fetchOrders, allOrders, loading }) => {
   }, []);
 
   const classes = useStyles();
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
+
   return (
     <div className={classes.root}>
       <Container>
@@ -53,72 +44,9 @@ const Orders = ({ fetchOrders, allOrders, loading }) => {
             <Skeleton variant="text" width="100%" height={100} />
           </>
         ) : (
-          allOrders.map((order) => (
-            <Accordion key={order.id}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Grid container direction="row" alignItems="center">
-                  <Grid item xs={12} md={4} className={classes.heading}>
-                    {order.user.displayName}
-                  </Grid>
-                  <Grid item xs={12} md={4} className={classes.text}>
-                    {order.id}
-                  </Grid>
-                  <Grid item xs={12} md={3} className={classes.text}>
-                    {order.date.toDate().toLocaleDateString("cs-CZ", options)}
-                  </Grid>
-                  <Grid item xs={12} md={1} className={classes.heading}>
-                    {order.celkem} Kč
-                  </Grid>
-                </Grid>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid container direction="column">
-                  <hr />
-                  <Grid container direction="row" className={classes.heading}>
-                    <Grid item xs={6} md={4}>
-                      Objednávka
-                    </Grid>
-                    <Grid item xs={2}>
-                      ks
-                    </Grid>
-                  </Grid>
-                  {order.items.map((item) => {
-                    return (
-                      <Grid container direction="row" key={item.id}>
-                        <Grid item xs={6} md={4}>
-                          {item.name}
-                        </Grid>
-                        <Grid item xs={2}>
-                          {item.quantity} ks
-                        </Grid>
-                      </Grid>
-                    );
-                  })}
-                  <hr />
-                  <Grid container direction="row" className={classes.heading}>
-                    <Grid item xs={6} md={4}>
-                      Jméno:
-                    </Grid>
-                    <Grid item xs={6}>
-                      Email:
-                    </Grid>
-                  </Grid>
-                  <Grid container direction="row">
-                    <Grid item xs={6} md={4}>
-                      {order.user.displayName}
-                    </Grid>
-                    <Grid item xs={6} md={4}>
-                      {order.user.email}
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
-          ))
+          allOrders.map((order) => {
+            return <OrdersItem key={order.id} order={order} />;
+          })
         )}
       </Container>
     </div>
@@ -128,6 +56,7 @@ const Orders = ({ fetchOrders, allOrders, loading }) => {
 const mapStateToProps = createStructuredSelector({
   allOrders: selectAllOrders,
   loading: selectLoad,
+  sortOrdersBySelect: sortOrdersBySelect,
 });
 
 const mapDispatchToProps = (dispatch) => ({
