@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
 import OrdersItem from "./ordersItem";
+import NoOrders from "../noOrders";
 
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
@@ -43,10 +44,12 @@ const Orders = ({ fetchOrders, allOrders, loading }) => {
             <Skeleton variant="text" width="100%" height={100} />
             <Skeleton variant="text" width="100%" height={100} />
           </>
-        ) : (
+        ) : allOrders.length ? (
           allOrders.map((order) => {
             return <OrdersItem key={order.id} order={order} />;
           })
+        ) : (
+          <NoOrders />
         )}
       </Container>
     </div>

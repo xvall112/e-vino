@@ -9,16 +9,27 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { sortAllOrdersBySelect } from "../../redux/orders/orders.action";
+import {
+  sortAllOrdersBySelect,
+  filterAllOrdersBySearch,
+} from "../../redux/orders/orders.action";
 import { createStructuredSelector } from "reselect";
 import { sortOrdersBySelect } from "../../redux/orders/orders.selector";
 import { connect } from "react-redux";
 
-const FilterAdmin = ({ sortBySelect, sortOrdersBySelect }) => {
+const FilterAdmin = ({
+  sortBySelect,
+  sortOrdersBySelect,
+  filterAllOrdersBySearch,
+}) => {
   const classes = useStyles();
   const setFilter = (event) => {
     sortBySelect(event.target.value);
   };
+  const setSearch = (event) => {
+    filterAllOrdersBySearch(event.target.value);
+  };
+
   return (
     <div>
       <Grid container spacing={2}>
@@ -29,6 +40,7 @@ const FilterAdmin = ({ sortBySelect, sortOrdersBySelect }) => {
             </div>
             <InputBase
               placeholder="Search…"
+              onChange={setSearch}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -145,6 +157,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
   sortBySelect: (select) => dispatch(sortAllOrdersBySelect(select)),
+  filterAllOrdersBySearch: (search) =>
+    dispatch(filterAllOrdersBySearch(search)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterAdmin);

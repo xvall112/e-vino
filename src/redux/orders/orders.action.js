@@ -33,3 +33,8 @@ export const sortAllOrdersBySelect = (select) => ({
   type: ordersActionTypes.SORT_ALL_ORDERS_BY_SELECT,
   payload: select,
 });
+
+export const filterAllOrdersBySearch = (search) => ({
+  type: ordersActionTypes.FILTER_ALL_ORDERS_BY_SEARCH,
+  payload: search,
+});

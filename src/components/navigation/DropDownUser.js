@@ -50,7 +50,9 @@ const DropDownUser = ({ handleClose, currentUser, signOutStart }) => {
             <PersonIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            <Box className={classes.typography}>Odhlásit se</Box>
+            <Box className={classes.typography}>
+              Odhlásit - {currentUser.displayName}
+            </Box>
           </ListItemText>
         </MenuItem>
       ) : (

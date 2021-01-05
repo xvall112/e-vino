@@ -6,6 +6,7 @@ const initialState = {
   orders: [],
   errorMessage: undefined,
   select: "date",
+  search: "",
 };
 
 const ordersReducer = (state = initialState, action) => {
@@ -30,6 +31,11 @@ const ordersReducer = (state = initialState, action) => {
       return {
         ...state,
         select: action.payload,
+      };
+    case ordersActionTypes.FILTER_ALL_ORDERS_BY_SEARCH:
+      return {
+        ...state,
+        search: action.payload,
       };
     default:
       return state;

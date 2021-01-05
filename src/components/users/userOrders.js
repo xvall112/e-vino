@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 
 import UserOrdersItem from "./userOrdersItem";
+import NoOrders from "../noOrders";
 
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Skeleton from "@material-ui/lab/Skeleton";
+
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { fetchCurrentUserOrdersStart } from "../../redux/orders/orders.action";
@@ -28,7 +30,6 @@ const UserOrders = ({
   useEffect(() => {
     fetchCurrentUserOrders(currentUser.id);
   }, []);
-  console.log(currentUser);
   const classes = useStyles();
 
   return (
@@ -40,10 +41,12 @@ const UserOrders = ({
             <Skeleton variant="text" width="100%" height={100} />
             <Skeleton variant="text" width="100%" height={100} />
           </>
-        ) : (
+        ) : currentUserOrders.length ? (
           currentUserOrders.map((order, index) => {
             return <UserOrdersItem key={index} order={order} />;
           })
+        ) : (
+          <NoOrders user />
         )}
       </Container>
     </div>

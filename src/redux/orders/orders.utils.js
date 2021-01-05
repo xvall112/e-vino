@@ -20,3 +20,12 @@ export const sortDesc = (arr, field) => {
       return 0;
     });
 };
+
+export const filterAllOrdersBySearch = (orders, searchId) => {
+  return orders.filter((order) => {
+    return (
+      order.id.toLowerCase().includes(searchId.toLowerCase()) ||
+      order.user.displayName.toLowerCase().includes(searchId.toLowerCase())
+    );
+  });
+};
