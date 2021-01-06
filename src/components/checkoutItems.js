@@ -100,12 +100,7 @@ const CheckoutItems = ({
               <h5>Košík je prázdný</h5>
             </Grid>
           )}
-          <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-          >
+          <Grid container direction="column" justify="center">
             {!currentUser && (
               <Box my={2}>
                 <Alert severity="info">
@@ -114,27 +109,33 @@ const CheckoutItems = ({
                 </Alert>
               </Box>
             )}
-            <Box mb={2}>
-              <Grid item>
-                <span className="total">CELKEM: {total} Kč</span>
-              </Grid>
-            </Box>
+            <Grid item xs={12}>
+              <Box
+                pb={3}
+                fontWeight={700}
+                fontSize={40}
+                color="neutral.main"
+                textAlign={{ xs: "center", md: "right" }}
+              >
+                CELKEM: {total} Kč
+              </Box>
+            </Grid>
 
             <Grid
               container
               direction="row"
               alignItems="center"
-              justify="space-around"
+              justify="space-between"
               spacing={2}
             >
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={4}>
                 <Link to="/">
                   <Button fullWidth variant="outlined" color="primary">
                     pokračovat v nákupu
                   </Button>
                 </Link>
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={4}>
                 <Button
                   fullWidth
                   variant="contained"
@@ -190,10 +191,6 @@ const Wrapper = styled.div`
     width: 50px;
     margin: 0 auto;
     padding: 5px;
-  }
-  .total {
-    font-weight: 700;
-    font-size: 40px;
   }
 `;
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutItems);

@@ -1,25 +1,35 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
+import { Grid, MenuItem, makeStyles } from "@material-ui/core";
 import styled from "styled-components";
 import Box from "@material-ui/core/Box";
 
 const ItemCart = ({ item }) => {
+  const classes = useStyles();
   const { image, name, quantity, price } = item;
   return (
-    <Wrapper>
-      <Grid container direction="row" alignItems="center">
-        <Grid item>
-          <img src={image} />
+    <MenuItem className={classes.root}>
+      <Wrapper>
+        <Grid container direction="row" alignItems="center">
+          <Grid item>
+            <img src={image} />
+          </Grid>
+          <Grid item>
+            <Box pl={2} display="flex" flexDirection="column">
+              <Box fontWeight={900}>{name}</Box>
+              <Box fontSize={16}>
+                {quantity} x {price} Kč
+              </Box>
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Box pl={2} display="flex" flexDirection="column">
-            <Box fontWeight={900}>{name}</Box> {quantity} x {price}
-          </Box>
-        </Grid>
-      </Grid>
-    </Wrapper>
+      </Wrapper>
+    </MenuItem>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  root: { paddingLeft: "0px" },
+}));
 
 const Wrapper = styled.div`
   margin-bottom: 10px;

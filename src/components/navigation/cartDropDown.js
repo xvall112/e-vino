@@ -4,18 +4,14 @@ import { withRouter } from "react-router-dom";
 import CartDropDownUser from "./DropDownUser";
 
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Popover from "@material-ui/core/Popover";
-import IconButton from "@material-ui/core/IconButton";
 import LocalMallOutlinedIcon from "@material-ui/icons/LocalMallOutlined";
-import Badge from "@material-ui/core/Badge";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
+import { Button, Box, Menu, Badge, IconButton } from "@material-ui/core";
 
 import { connect } from "react-redux";
 import {
   selectCartItemsCount,
   selectCartItems,
+  selectCartTotal,
 } from "../../redux/cart/cart.selectors";
 import { createStructuredSelector } from "reselect";
 
@@ -41,17 +37,17 @@ const StyledMenu = withStyles({
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "center",
+      horizontal: "right",
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "center",
+      horizontal: "right",
     }}
     {...props}
   />
 ));
 
-const CartDropDown = ({ cartItems, itemCount, history }) => {
+const CartDropDown = ({ cartItems, itemCount, history, total }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -72,11 +68,11 @@ const CartDropDown = ({ cartItems, itemCount, history }) => {
 
   return (
     <div>
-      <IconButton onClick={handleClick}>
+      <Button onClick={handleClick}>
         <Badge badgeContent={itemCount} color="primary">
           <LocalMallOutlinedIcon />
         </Badge>
-      </IconButton>
+      </Button>
 
       <StyledMenu
         anchorEl={anchorEl}
@@ -85,29 +81,34 @@ const CartDropDown = ({ cartItems, itemCount, history }) => {
         onClose={handleClose}
       >
         <div className={classes.typography}>
-          <Grid container direction="column">
-            <h2>Košík</h2>
-
-            {cartItems.length ? (
-              cartItems.map((cartItem) => {
-                return <ItemCart key={cartItem.id} item={cartItem} />;
-              })
-            ) : (
-              <p>Váš košík je prázdný</p>
-            )}
-
-            <Button
-              onClick={toCheckout}
-              variant="contained"
-              color="primary"
-              fullWidth
-              disabled={cartItems.length ? false : true}
-            >
-              Do Košíku
-            </Button>
-
-            <CartDropDownUser handleClose={handleClose} />
-          </Grid>
+          {cartItems.length ? (
+            cartItems.map((cartItem) => {
+              return <ItemCart key={cartItem.id} item={cartItem} />;
+            })
+          ) : (
+            <p>Váš košík je prázdný</p>
+          )}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            my={2}
+          >
+            <Box fontSize={22}>Celková cena:</Box>
+            <Box color="neutral.main" fontWeight="fontWeightBold" fontSize={30}>
+              {total} Kč
+            </Box>
+          </Box>
+          <Button
+            onClick={toCheckout}
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={cartItems.length ? false : true}
+          >
+            přejít do košíku
+          </Button>
+          <CartDropDownUser handleClose={handleClose} />
         </div>
       </StyledMenu>
     </div>
@@ -119,6 +120,7 @@ const mapDispatchToProps = (dispatch) => ({});
 const mapStateToProps = createStructuredSelector({
   itemCount: selectCartItemsCount,
   cartItems: selectCartItems,
+  total: selectCartTotal,
 });
 
 export default withRouter(

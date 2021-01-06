@@ -18,7 +18,7 @@ const OrdersItem = ({ order }) => {
   };
   return (
     <>
-      <Accordion key={order.id}>
+      <Accordion square>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"

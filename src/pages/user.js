@@ -4,6 +4,7 @@ import UserTabPane from "../components/users/userTabPane";
 import UserHeader from "../components/users/usersHeader";
 import { makeStyles } from "@material-ui/core/styles";
 import blueGrey from "@material-ui/core/colors/blueGrey";
+import Slide from "@material-ui/core/Slide";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,10 +16,12 @@ const useStyles = makeStyles((theme) => ({
 const User = () => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <UserHeader />
-      <UserTabPane />
-    </div>
+    <Slide direction="right" in={true}>
+      <div className={classes.root}>
+        <UserHeader />
+        <UserTabPane />
+      </div>
+    </Slide>
   );
 };
 

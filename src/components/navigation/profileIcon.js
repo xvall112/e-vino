@@ -37,11 +37,11 @@ const StyledMenu = withStyles({
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "center",
+      horizontal: "right",
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "center",
+      horizontal: "right",
     }}
     {...props}
   />
@@ -51,7 +51,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   /* const currentUser = useContext(CurrentUserContext); */
-
+  console.log(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -64,7 +64,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
 
   return (
     <Wrapper>
-      <IconButton onClick={handleClick}>
+      <Button onClick={handleClick}>
         {currentUser ? (
           currentUser.photoURL ? (
             <Avatar src={currentUser.photoURL} />
@@ -74,7 +74,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
         ) : (
           <PersonIcon />
         )}
-      </IconButton>
+      </Button>
       {currentUser ? (
         <StyledMenu
           anchorEl={anchorEl}
@@ -84,7 +84,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
         >
           <Box my={1}>
             <MenuItem>
-              <BoxStyled p={2} px={5} borderRadius={16} width={1}>
+              <BoxStyled p={2} px={5} width={1}>
                 <Grid
                   container
                   direction="column"

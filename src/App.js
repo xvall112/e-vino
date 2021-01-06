@@ -39,7 +39,7 @@ const App = ({ currentUser, checkUserSession }) => {
       <GoogleFont typography={typography} />
 
       <Navigation />
-      <Box pt={7}>
+      <Box pt={6}>
         <Switch>
           <Route path="/" exact>
             <HomePage />

@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sticky: {
     position: "sticky",
-    top: "55px",
+    top: "48px",
   },
 }));
 

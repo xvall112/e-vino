@@ -2,12 +2,16 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CartIcon from "../components/navigation/cartDropDown";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import AppBar from "@material-ui/core/AppBar";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import ProfileIcon from "./navigation/profileIcon";
+
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Grid,
+  Container,
+  AppBar,
+  LinearProgress,
+  Box,
+} from "@material-ui/core";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -37,13 +41,15 @@ const Navigation = ({ clearFilteringWines, loading }) => {
             >
               <Grid item>
                 <Link to="/" onClick={() => clearFilteringWines()}>
-                  <h1>E-vino</h1>
+                  <h1>
+                    <Box color="neutral.main">E-vino</Box>
+                  </h1>
                 </Link>
               </Grid>
-              <GridIcon>
+              <Box display="flex" flexDirection="row">
                 <ProfileIcon />
                 <CartIcon />
-              </GridIcon>
+              </Box>
             </Grid>
           </Container>
           {loading && <LinearProgress />}
@@ -74,8 +80,4 @@ const Wrapper = styled.section`
   }
 `;
 
-const GridIcon = styled(Grid)`
-  display: flex;
-  flex-direction: row;
-`;
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
