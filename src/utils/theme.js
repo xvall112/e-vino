@@ -25,7 +25,8 @@ export const theme = createMuiTheme({
     },
   },
   palette: {
-    primary: { main: blue[700] },
+    primary: { main: "#359cd7" },
+    secondary: { main: "#7d6efb" },
     backgroundUser: "linear-gradient(150deg, #359cd7 10%, #7d6efb 100%)",
     neutral: {
       main: "#5c6ac4",

@@ -5,7 +5,7 @@ import CartDropDownUser from "./DropDownUser";
 
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import LocalMallOutlinedIcon from "@material-ui/icons/LocalMallOutlined";
-import { Button, Box, Menu, Badge, IconButton } from "@material-ui/core";
+import { Button, Box, Menu, Badge } from "@material-ui/core";
 
 import { connect } from "react-redux";
 import {

@@ -15,8 +15,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
-import Popover from "@material-ui/core/Popover";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 
@@ -27,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
   },
 }));
+
+const BoxStyled = withStyles((theme) => ({
+  root: { background: theme.palette.backgroundUser },
+}))(Box);
+
 const StyledMenu = withStyles({
   paper: {
     border: "1px solid #d3d4d5",
@@ -178,9 +181,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const Wrapper = styled.div``;
-const BoxStyled = styled(Box)`
-  background: linear-gradient(150deg, #359cd7 10%, #7d6efb 100%);
-`;
+
 const MenuItemStyled = styled(MenuItem)`
   font-size: 16px;
 `;
