@@ -53,7 +53,6 @@ const FilterAdmin = ({
           <StyledFormControl
             style={{ outline: "none" }}
             variant="outlined"
-            className={classes.formControl}
             size="small"
           >
             <InputLabel id="demo-simple-select-outlined-label">
@@ -80,6 +79,13 @@ const FilterAdmin = ({
 
 const StyledFormControl = withStyles((theme) => ({
   root: {
+    minWidth: 150,
+    height: "auto",
+
+    backgroundColor: fade(theme.palette.common.white, 0.5),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 1),
+    },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
         borderColor: fade(theme.palette.common.white, 0.5),
@@ -137,15 +143,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: fade(theme.palette.common.white, 1),
     },
   },
-  formControl: {
-    minWidth: 150,
-    height: "auto",
 
-    backgroundColor: fade(theme.palette.common.white, 0.5),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 1),
-    },
-  },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },

@@ -17,6 +17,7 @@ import { selectCurrentUser } from "../../redux/user/user.selector";
 const useStyles = makeStyles((theme) => ({
   typography: {
     fontSize: "14px",
+    "&:hover": { color: theme.palette.primary.main },
   },
   hr: {
     marginBottom: "0px",

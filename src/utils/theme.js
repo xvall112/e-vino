@@ -4,15 +4,24 @@ import blue from "@material-ui/core/colors/blue";
 
 export const theme = createMuiTheme({
   overrides: {
+    MuiAppBar: {
+      colorDefault: {
+        background: "linear-gradient(150deg, #359cd7 10%, #7d6efb 100%)",
+      },
+    },
     MuiPaper: {
       rounded: { borderRadius: "0px" },
     },
     MuiBadge: {
       colorPrimary: {
-        background: "linear-gradient(150deg, #359cd7 10%, #7d6efb 100%)",
+        backgroundColor: "white",
+        color: "#5c6ac4",
       },
     },
-    MuiOutlinedInput: { root: { borderRadius: "0px" } },
+
+    MuiOutlinedInput: {
+      root: { borderRadius: "0px" },
+    },
     // Style sheet name ⚛️
     MuiButton: {
       root: { borderRadius: "0px" },
@@ -33,5 +42,6 @@ export const theme = createMuiTheme({
       light: "#359cd7",
       dark: "#7d6efb",
     },
+    navigationIconColor: "white",
   },
 });

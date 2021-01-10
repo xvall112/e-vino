@@ -42,7 +42,7 @@ const Navigation = ({ clearFilteringWines, loading }) => {
               <Grid item>
                 <Link to="/" onClick={() => clearFilteringWines()}>
                   <h1>
-                    <Box color="secondary.main">E-vino</Box>
+                    <Box color="white">E-vino</Box>
                   </h1>
                 </Link>
               </Grid>

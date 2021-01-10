@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -9,13 +10,17 @@ import { createStructuredSelector } from "reselect";
 import { selectLoad } from "../redux/loading/loading.selector";
 
 /* components */
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { Grid } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
+import {
+  Grid,
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  CircularProgress,
+  Paper,
+  Box,
+} from "@material-ui/core";
 
 const validationSchema = yup.object({
   email: yup
@@ -58,10 +63,15 @@ const SignUp = ({ singUpStart, loading }) => {
         justify="center"
         alignItems="center"
       >
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FwhiteWine.png?alt=media&token=228fcd0e-9cd9-40d9-b1ee-bf6c71256062"
+          alt="wine"
+          style={{ height: "12vh" }}
+        />
         <h3>Registrace</h3>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
+        <Grid item xs={11} md={6}>
+          <Paper>
+            <Box p={2} elevation={3}>
               <form onSubmit={formik.handleSubmit}>
                 <Grid
                   container
@@ -155,8 +165,8 @@ const SignUp = ({ singUpStart, loading }) => {
                   </Grid>
                 </Grid>
               </form>
-            </CardContent>
-          </Card>
+            </Box>
+          </Paper>
           <div className="register-button">
             <span>Máš účet? </span>
             <Link to="signIn"> Přihlásit se</Link>

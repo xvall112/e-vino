@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
       width: "400px",
     },
   },
+  icon: {
+    color: theme.palette.navigationIconColor,
+  },
 }));
 
 const StyledMenu = withStyles({
@@ -70,7 +73,7 @@ const CartDropDown = ({ cartItems, itemCount, history, total }) => {
     <div>
       <Button onClick={handleClick}>
         <Badge badgeContent={itemCount} color="primary">
-          <LocalMallOutlinedIcon />
+          <LocalMallOutlinedIcon className={classes.icon} />
         </Badge>
       </Button>
 

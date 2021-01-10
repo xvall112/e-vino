@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import IconButton from "@material-ui/core/IconButton";
+import {
+  makeStyles,
+  withStyles,
+  Box,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  IconButton,
+} from "@material-ui/core";
+
 import ReplayIcon from "@material-ui/icons/Replay";
 
 import { connect } from "react-redux";
@@ -21,15 +25,25 @@ import {
   selectDruhWine,
 } from "../redux/directory/directory.selector";
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
+const FormControlStyled = withStyles((theme) => ({
+  root: {
+    color: theme.palette.secondary.main,
     margin: theme.spacing(1),
     minWidth: 120,
+    "& .MuiFormLabel-root": { color: theme.palette.primary.main },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: theme.palette.primary.main,
+      },
+      "&:hover fieldset": {
+        borderColor: theme.palette.primary.main,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: theme.palette.primary.main,
+      },
+    },
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+}))(FormControl);
 
 const Filterinng = ({
   setFilteringWinesColor,
@@ -38,8 +52,6 @@ const Filterinng = ({
   winesColorFiltering,
   clearFilteringWines,
 }) => {
-  const classes = useStyles();
-
   const handleChangeColor = (event) => {
     setFilteringWinesColor(event.target.value);
   };
@@ -49,7 +61,7 @@ const Filterinng = ({
 
   return (
     <Box my={2} display="flex" alignItems="center">
-      <FormControl variant="outlined" className={classes.formControl}>
+      <FormControlStyled variant="outlined" color="secondary">
         <InputLabel id="demo-simple-select-outlined-label">barva</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
@@ -63,8 +75,8 @@ const Filterinng = ({
           <MenuItem value={"červené"}>Červené</MenuItem>
           <MenuItem value={"růžové"}>Růžové</MenuItem>
         </Select>
-      </FormControl>
-      <FormControl variant="outlined" className={classes.formControl}>
+      </FormControlStyled>
+      <FormControlStyled variant="outlined" color="secondary">
         <InputLabel id="demo-simple-select-outlined-label">druh</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
@@ -79,7 +91,7 @@ const Filterinng = ({
           <MenuItem value={"polosuché"}>Polosuché</MenuItem>
           <MenuItem value={"polosladké"}>Polosladké</MenuItem>
         </Select>
-      </FormControl>
+      </FormControlStyled>
       <IconButton onClick={() => clearFilteringWines()}>
         <ReplayIcon />
       </IconButton>

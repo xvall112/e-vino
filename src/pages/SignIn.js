@@ -1,25 +1,28 @@
 import React from "react";
-import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { createStructuredSelector } from "reselect";
 
 /* components */
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { Grid } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import ForgetPassword from "../components/forgetPassword";
 
 import {
-  googleSignInStart,
-  emailSignInStart
-} from "../redux/user/user.actions";
+  Grid,
+  Box,
+  CircularProgress,
+  TextField,
+  Button,
+  Paper,
+} from "@material-ui/core";
 
+import ForgetPassword from "../components/forgetPassword";
+
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import {
+  googleSignInStart,
+  emailSignInStart,
+} from "../redux/user/user.actions";
 import { selectLoad } from "../redux/loading/loading.selector";
 
 const validationSchema = yup.object({
@@ -27,20 +30,20 @@ const validationSchema = yup.object({
     .string("Vložte email")
     .email("špatný tvar emailu")
     .required("Email není vyplňen"),
-  password: yup.string("Vložte heslo").required("Heslo není vyplňeno")
+  password: yup.string("Vložte heslo").required("Heslo není vyplňeno"),
 });
 
 const SignIn = ({ googleSignInStart, emailSignInStart, loading }) => {
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: ""
+      password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       emailSignInStart(values.email, values.password);
       formik.resetForm({});
-    }
+    },
   });
 
   return (
@@ -51,10 +54,15 @@ const SignIn = ({ googleSignInStart, emailSignInStart, loading }) => {
         justify="center"
         alignItems="center"
       >
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/evino-30926.appspot.com/o/wine-bottle%2FwhiteWine.png?alt=media&token=228fcd0e-9cd9-40d9-b1ee-bf6c71256062"
+          alt="wine"
+          style={{ height: "12vh" }}
+        />
         <h3>Přihlášení</h3>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
+        <Grid item xs={11} md={6}>
+          <Paper elevation={3}>
+            <Box p={2}>
               <form onSubmit={formik.handleSubmit}>
                 <Grid
                   container
@@ -125,8 +133,8 @@ const SignIn = ({ googleSignInStart, emailSignInStart, loading }) => {
                   {loading ? <CircularProgress /> : "Přihlásit přes Google"}
                 </Button>
               </Grid>
-            </CardContent>
-          </Card>
+            </Box>
+          </Paper>
           <div className="register-button">
             <div className="register-button_registrovat">
               <span>Nemáš účet? </span>
@@ -141,13 +149,13 @@ const SignIn = ({ googleSignInStart, emailSignInStart, loading }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: selectLoad
+  loading: selectLoad,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   googleSignInStart: () => dispatch(googleSignInStart()),
   emailSignInStart: (email, password) =>
-    dispatch(emailSignInStart({ email, password }))
+    dispatch(emailSignInStart({ email, password })),
 });
 
 const Wrapper = styled.section`

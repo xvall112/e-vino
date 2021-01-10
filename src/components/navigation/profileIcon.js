@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
   typography: {
     fontSize: "16px",
   },
+  icon: {
+    color: theme.palette.navigationIconColor,
+  },
 }));
 
 const BoxStyled = withStyles((theme) => ({
@@ -53,8 +56,6 @@ const StyledMenu = withStyles({
 const ProfileIcon = ({ currentUser, signOutStart }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  /* const currentUser = useContext(CurrentUserContext); */
-  console.log(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -72,10 +73,10 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
           currentUser.photoURL ? (
             <Avatar src={currentUser.photoURL} />
           ) : (
-            <PersonIcon />
+            <PersonIcon className={classes.icon} />
           )
         ) : (
-          <PersonIcon />
+          <PersonIcon className={classes.icon} />
         )}
       </Button>
       {currentUser ? (
@@ -148,7 +149,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <Box my={2}>
+          <Box>
             <Link to="signIn">
               <MenuItem onClick={handleClose} variant="outlined">
                 <Button fullWidth variant="outlined" color="primary">
