@@ -5,20 +5,24 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { createStructuredSelector } from "reselect";
 
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  withStyles,
+  Box,
+} from "@material-ui/core";
 
 import { resetPasswordStart } from "../redux/user/user.actions";
 const validationSchema = yup.object({
   email: yup
     .string("Vložte email")
     .email("špatný tvar emailu")
-    .required("Email není vyplňen")
+    .required("Email není vyplňen"),
 });
 
 const ForgetPassword = ({ resetPasswordStart }) => {
@@ -33,19 +37,17 @@ const ForgetPassword = ({ resetPasswordStart }) => {
 
   const formik = useFormik({
     initialValues: {
-      email: ""
+      email: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       resetPasswordStart(values.email);
       formik.resetForm({});
-    }
+    },
   });
   return (
     <div>
-      <span className="forgotPassword" onClick={handleClickOpen}>
-        Zapomněl jsi heslo?
-      </span>
+      <BoxLink onClick={handleClickOpen}>Zapomněl jsi heslo?</BoxLink>
       <Dialog
         fullWidth
         open={open}
@@ -84,8 +86,20 @@ const ForgetPassword = ({ resetPasswordStart }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  resetPasswordStart: email => dispatch(resetPasswordStart(email))
+const mapDispatchToProps = (dispatch) => ({
+  resetPasswordStart: (email) => dispatch(resetPasswordStart(email)),
 });
 
+const BoxLink = withStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    textDecoration: "underline",
+    color: theme.palette.primary.main,
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+}))(Box);
 export default connect(null, mapDispatchToProps)(ForgetPassword);

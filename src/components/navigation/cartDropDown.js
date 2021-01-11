@@ -30,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StyledMenu = withStyles({
+const StyledMenu = withStyles((theme) => ({
   paper: {
-    border: "1px solid #d3d4d5",
+    border: `1px solid ${theme.palette.neutral.main}`,
   },
-})((props) => (
+}))((props) => (
   <Menu
-    elevation={0}
+    elevation={3}
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",

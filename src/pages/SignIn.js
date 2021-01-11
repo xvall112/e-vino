@@ -13,6 +13,7 @@ import {
   TextField,
   Button,
   Paper,
+  withStyles,
 } from "@material-ui/core";
 
 import ForgetPassword from "../components/forgetPassword";
@@ -135,13 +136,13 @@ const SignIn = ({ googleSignInStart, emailSignInStart, loading }) => {
               </Grid>
             </Box>
           </Paper>
-          <div className="register-button">
+          <BoxLink>
             <div className="register-button_registrovat">
               <span>Nemáš účet? </span>
               <Link to="signUp"> Registrovat se</Link>
             </div>
             <ForgetPassword />
-          </div>
+          </BoxLink>
         </Grid>
       </MainGrid>
     </Wrapper>
@@ -158,18 +159,22 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(emailSignInStart({ email, password })),
 });
 
+const BoxLink = withStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    textAlign: "center",
+    "& a": {
+      textDecoration: "underline",
+      color: theme.palette.primary.main,
+    },
+  },
+}))(Box);
+
 const Wrapper = styled.section`
   margin-top: 40px;
-  .register-button {
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    a {
-      text-decoration: underline;
-      color: blue;
-    }
-  }
+
   .register-button_registrovat {
     display: flex;
     flex-direction: column;

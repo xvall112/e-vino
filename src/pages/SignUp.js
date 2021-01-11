@@ -15,12 +15,23 @@ import {
   Grid,
   TextField,
   Button,
-  Card,
-  CardContent,
   CircularProgress,
   Paper,
   Box,
+  withStyles,
 } from "@material-ui/core";
+
+const BoxLink = withStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    "& a": {
+      textDecoration: "underline",
+      color: theme.palette.primary.main,
+    },
+  },
+}))(Box);
 
 const validationSchema = yup.object({
   email: yup
@@ -69,9 +80,9 @@ const SignUp = ({ singUpStart, loading }) => {
           style={{ height: "12vh" }}
         />
         <h3>Registrace</h3>
-        <Grid item xs={11} md={6}>
-          <Paper>
-            <Box p={2} elevation={3}>
+        <Grid item xs={11} md={4}>
+          <Paper elevation={3}>
+            <Box p={2}>
               <form onSubmit={formik.handleSubmit}>
                 <Grid
                   container
@@ -167,10 +178,10 @@ const SignUp = ({ singUpStart, loading }) => {
               </form>
             </Box>
           </Paper>
-          <div className="register-button">
+          <BoxLink>
             <span>Máš účet? </span>
             <Link to="signIn"> Přihlásit se</Link>
-          </div>
+          </BoxLink>
         </Grid>
       </MainGrid>
     </Wrapper>

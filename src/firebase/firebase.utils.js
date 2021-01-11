@@ -5,13 +5,13 @@ import "firebase/storage";
 
 const config = {
   apiKey: "AIzaSyABOr3Vj_-gy7GPoAdRWes2R351oWNwb20",
-  authDomain: "evino-30926.firebaseapp.com",
+  authDomain: process.env.FIREBASE_API_KEY,
   databaseURL: "https://evino-30926.firebaseio.com",
   projectId: "evino-30926",
   storageBucket: "evino-30926.appspot.com",
-  messagingSenderId: "124959067696",
-  appId: "1:124959067696:web:565e3a6e996b9863f227f5",
-  measurementId: "G-SH7D914J5Q",
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
 firebase.initializeApp(config);
