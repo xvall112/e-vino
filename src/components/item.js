@@ -134,7 +134,7 @@ const Item = ({
           )}
         </Grid>
         {currentUser ? (
-          currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
+          currentUser.admin === true ? (
             <Grid container direction="row" justify="center">
               {" "}
               <UpdateWines item={item} />

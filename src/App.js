@@ -58,7 +58,7 @@ const App = ({ currentUser, checkUserSession }) => {
           </Route>
           <Route path="/admin" exact>
             {currentUser ? (
-              currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
+              currentUser.admin === true ? (
                 <AdminPage />
               ) : (
                 <Redirect to="/" />

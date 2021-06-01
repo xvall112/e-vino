@@ -10,14 +10,14 @@ import {
   signUpSuccess,
   signUpFailure,
   resetPasswordSuccess,
-  resetPasswordFailure
+  resetPasswordFailure,
 } from "./user.actions";
 
 import {
   auth,
   googleProvider,
   createUserProfileDocument,
-  getCurrentUser
+  getCurrentUser,
 } from "../../firebase/firebase.utils";
 
 import { notistackSuccess, notistackError } from "../../notistack/notistack";
@@ -44,6 +44,7 @@ export function* signInWithGoogle() {
   } catch (error) {
     yield put(loadingEnd());
     yield put(signInFailure(error));
+    yield console.log(error);
     yield call(notistackError, "Něco se pokazilo, zkuzte znovu");
   }
 }
@@ -91,7 +92,7 @@ export function* signUp({ payload: { email, password, displayName } }) {
     yield put(
       signUpSuccess({
         user,
-        additionalData: { displayName }
+        additionalData: { displayName },
       })
     );
     yield put(loadingEnd());
@@ -157,6 +158,6 @@ export function* userSagas() {
     call(onSignOutStart),
     call(onSignUpStart),
     call(onSignUpSuccess),
-    call(onResetPasswordStart)
+    call(onResetPasswordStart),
   ]);
 }

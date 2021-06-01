@@ -116,7 +116,7 @@ const ProfileIcon = ({ currentUser, signOutStart }) => {
               </MenuItemStyled>
             </Link>
             {currentUser ? (
-              currentUser.id === process.env.REACT_APP_ADMIN_ID ? (
+              currentUser.admin === true ? (
                 <Link to="/admin" onClick={handleClose}>
                   <MenuItemStyled>
                     <ListItemIcon>

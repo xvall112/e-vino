@@ -176,6 +176,7 @@ export const firestore = firebase.firestore();
 export const storageRef = firebase.storage().ref();
 
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
+
 googleProvider.setCustomParameters({
   prompt: "select_account",
 });
