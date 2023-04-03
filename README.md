@@ -7,3 +7,4 @@ This project was created for training skills.
 - React
 - Redux
 - Redux-saga
+- Firebase
